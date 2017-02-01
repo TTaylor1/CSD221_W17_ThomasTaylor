@@ -82,19 +82,39 @@ public class BookStore {
         float price;
         System.out.print("Here are the books currently in the system:");
                 // a loop to print out all the cars on the lot
+                if(books.get(counter) == null)
+                {
+                    System.out.print("\nThere are no books to edit.");
+                     return Choice = -1;
+                }
+                
                 while(books.get(counter) != null){
                     System.out.print("\n" + (counter + 1) + "." + books.get(counter));
                     counter++;
                 }
                 
+                
         System.out.print("\n Choose which book you would like to edit: ");
         counter = input.nextInt();
         author = books.get(counter-1).getAuthor();
-        
+        quantity = books.get(counter - 1).getQuantity();
+        title = books.get(counter - 1).getTitle();
+        price = books.get(counter - 1).getPrice();
         
         return Choice = -1;
     }
     
+    
+    public int DeleteABook(int Choice){
+        
+        return Choice = -1;
+    }
+    
+    public int ViewAllBooks(int Choice){
+        
+        
+        return Choice = -1;
+    }
     
     
 }
