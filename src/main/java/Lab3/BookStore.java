@@ -20,6 +20,20 @@ public class BookStore {
         ArrayList<Book> books = new ArrayList<Book>();
         int Choice = -1;
         
+    Book Ford = new Book("Tom T.",10, "Mustang", 50);
+    Book Dodge = new Book("Tom T.",10, "Charger", 30);
+    Book Chevy = new Book("Tom T.",10, "Impala", 25);
+    Book Toyota = new Book("Tom T.",10, "4Runner", 20);
+    Book Porsche = new Book("Tom T.",10, "Carerra", 15);
+    
+    // preassigned cars added to the car lot.
+    books.add(Ford);
+    books.add(Dodge);
+    books.add(Chevy);
+    books.add(Toyota);
+    books.add(Porsche);
+        
+        
         while (Choice < 0){
         System.out.print("\n1. Add A Book"
                 + "\n2. Edit A Book"
@@ -38,10 +52,10 @@ public class BookStore {
                 Choice = EditABook(Choice, books);  
                 break;
             case 3:
-                Choice = DeleteABook(Choice);
+                Choice = DeleteABook(Choice, books);
                 break;
             case 4:
-                Choice = ViewAllBooks(Choice);
+                Choice = ViewAllBooks(Choice, books);
                 break;             
             case 5:
                 // exit the program
@@ -81,19 +95,17 @@ public class BookStore {
         String title;
         float price;
         System.out.print("Here are the books currently in the system:");
-                // a loop to print out all the cars on the lot
+                // a loop to print out all the books in the store
                 if(books.get(counter) == null)
                 {
                     System.out.print("\nThere are no books to edit.");
                      return Choice = -1;
                 }
                 
-                while(books.get(counter) != null){
-                    System.out.print("\n" + (counter + 1) + "." + books.get(counter));
-                    counter++;
-                }
-                
-                
+                for( counter = 0; counter < books.size(); counter++){
+                    System.out.print("\n" + ((counter + 1) + ". ") + books.get(counter).getTitle());                    
+                }    
+        
         System.out.print("\n Choose which book you would like to edit: ");
         counter = input.nextInt();
         author = books.get(counter-1).getAuthor();
@@ -105,13 +117,43 @@ public class BookStore {
     }
     
     
-    public int DeleteABook(int Choice){
-        
+    public int DeleteABook(int Choice, ArrayList<Book> books){
+        Scanner input2=new Scanner(System.in);
+        int counter;
+                System.out.print("Here is a list of the books: \n");
+                
+                for( counter = 0; counter < books.size(); counter++){
+                    System.out.print("\n" + ((counter + 1) + ". ") + books.get(counter).getTitle());                    
+                }      
+                
+                boolean DeleteChoice = false;
+                System.out.print("\nChoose the book you would like to remove from inventory:");
+                counter = input2.nextInt();
+                books.remove(books.get(counter - 1));
+                
+                counter = 1;
+                // a loop to repack the array so their are no null entries between books
+                while (DeleteChoice != true){
+                if (books.get(counter) == null && books.get(counter + 1) != null){
+                books.get(counter) = books.get(counter + 1);
+                books.remove(books.get(counter + 1));
+            }
+                else if (books.get(counter) == null && books.get(counter+1) == null){
+                    DeleteChoice = true;                    
+                }
+                counter++;
+                }   
         return Choice = -1;
     }
     
-    public int ViewAllBooks(int Choice){
-        
+    public int ViewAllBooks(int Choice, ArrayList<Book> books){
+         int counter;
+                System.out.print("Here is a list of the books: \n");
+                
+                for( counter = 0; counter < books.size(); counter++){
+                    System.out.print("\n" + ((counter + 1) + ". ") + books.get(counter).getTitle());                    
+                }      
+                System.out.print("\n ----------------");
         
         return Choice = -1;
     }
