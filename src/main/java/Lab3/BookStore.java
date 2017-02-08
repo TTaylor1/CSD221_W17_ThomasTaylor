@@ -5,8 +5,15 @@
  */
 package Lab3;
 
+
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
+
+
 
 /**
  *
@@ -16,24 +23,25 @@ public class BookStore {
     Scanner input=new Scanner(System.in);
     ArrayList<Books> book1 = new ArrayList<>();
     ArrayList<Magazines> mags = new ArrayList<>();
-    public void run() {
+   Format formatter = new SimpleDateFormat("MM-yyyy");
+    public void run() throws Exception{
         //ArrayList<Publication> books = new ArrayList<Publication>();
         
         int Choice = -1;
+        Date magDate = (Date) formatter.parseObject("08-2017");
         
-    //Magazines Ford = new Magazines(5, , "Rawr", 10, 15);
+    Magazines Ford = new Magazines(5, magDate, "Rawr", 10.0, 15);
     Books Dodge = new Books("Thomas", "Rawr on the Shore", 10, 30);
     Books Chevy = new Books("Timmy", "Rawr on the Water", 10, 30);
     Books Toyota = new Books("Taylor", "Rawr on the Rocks", 10, 30);
-    //Publication Porsche = new Publication("Tom T.",10, 15);
+    Magazines Porsche = new Magazines(15, magDate, "Meow", 10.0, 15);
     
     // preassigned cars added to the car lot.
-    //books.add(Ford);
+    mags.add(Ford);
     book1.add(Dodge);
     book1.add(Chevy);
     book1.add(Toyota);
-    //books.add(Porsche);
-        
+    mags.add(Porsche);        
         
         while (Choice < 0){
         System.out.print("\n1. Add A Publication"
@@ -63,23 +71,26 @@ public class BookStore {
                System.exit(0);            
         }}while (Choice != -1);
         }           
-}
+    }
     
-    public int AddABook(int Choice){
+    public int AddABook(int Choice) throws Exception {
         String author;
         int quantity;
+        String currentIssue;
         String title;
         float price;
+        Date magDate;
         int Type = -1;
         
         Books bookz = new Books();
+        Magazines magz = new Magazines();
         Publication book = new Publication();
         
         while (Type < 0){
             System.out.print("\nWhat would you like to add?" 
                             +"\n1. Add a Book"
                             +"\n2. Add a Magazine"
-                            +"\n3. Back to Main Menu");
+                            +"\n3. Back to Main Menu\n");
             Type = input.nextInt();
             
             switch(Type){
@@ -103,48 +114,29 @@ public class BookStore {
                     Type = -1;
                     break;
                 case 2:
-                    System.out.print("Add a Book");
+                    System.out.print("Add a Magazine");
         
                     System.out.print("\nTitle: ");
-                    author = input.next();
-                    bookz.setAuthor(author);
+                    title = input.next();
+                    magz.setTitle(title);
                     System.out.print("\nQuantity to Order: ");
                     quantity = input.nextInt();
-                    book.setCopies(quantity);
-                    System.out.print("\nTitle of book: ");
-                    title = input.next();
-                    book.setTitle(title);
+                    magz.setOrderQty(quantity);
+                    System.out.print("\nDate of current Issue: ");
+                    currentIssue = input.next();
+                    magDate = (Date) formatter.parseObject(currentIssue);
+                    magz.setCurrIssue(magDate);
                     System.out.print("\nPrice per copy: ");
                     price = input.nextFloat();
-                    book.setPrice(price);
+                    magz.setPrice(price);
                     
-                    book1.add(bookz);
+                    mags.add(magz);
                     Type = -1;
                     break;
                 case 3: break;
-            }
-            
-            
-        
-        /*System.out.print("Add a Book");
-        
-        System.out.print("\nTitle: ");
-        author = input.next();
-        bookz.setAuthor(author);
-        System.out.print("\nQuantity to Order: ");
-        quantity = input.nextInt();
-        book.setCopies(quantity);
-        System.out.print("\nTitle of book: ");
-        title = input.next();
-        book.setTitle(title);
-        System.out.print("\nPrice per copy: ");
-        price = input.nextFloat();
-        book.setPrice(price);
-        
-        book1.add(bookz);*/
+            }    
         }
-        return Choice = -1;
-        
+        return Choice = -1;        
     }
     
     public int EditABook(int Choice){
@@ -153,7 +145,16 @@ public class BookStore {
         int quantity;
         String title;
         double price;
-        System.out.print("Here are the books currently in the system:");
+        int Type = -1;
+        int change = 0;
+        
+        while(Type < 0){
+         System.out.print("\nChoose which list you would like to view:"
+                              +"\n1. Edit a Book"
+                              +"\n2. Edit a Magazine"
+                              +"\n3. Return to Menu\n");
+             Type = input.nextInt();
+         System.out.print("Here are the books currently in the system:");
                 // a loop to print out all the books in the store
                 if(book1.get(counter) == null)
                 {
@@ -167,20 +168,54 @@ public class BookStore {
         
         System.out.print("\n Choose which book you would like to edit: ");
         counter = input.nextInt();
-        author = book1.get(counter-1).getAuthor();
-        quantity = book1.get(counter - 1).getCopies();
-        title = book1.get(counter - 1).getTitle();
-        price = book1.get(counter - 1).getPrice();
         
+        System.out.print("\n Choose which section you would like to edit:" 
+                              +"\n1. Edit the Title"
+                              +"\n2. Edit the Order Quantity"
+                              +"\n3. Edit the Price"  
+                              +"\n4. Edit the Author "
+                              +"\n5. Return to Menu\n");
+        switch(change){
+            case 1: 
+                System.out.print("\n Edit the Title: ");
+                book1.get(counter - 1).setTitle(input.next());
+                break;
+            case 2:
+                System.out.print("\nEdit the Order Quantity: ");
+                book1.get(counter - 1).setCopies(input.nextInt());
+                break;
+            case 3:
+                System.out.print("\nEdit the Price: ");
+                book1.get(counter - 1).setPrice(input.nextInt());
+                break;
+            case 4:
+                System.out.print("\nEdit the Author: ");
+                book1.get(counter - 1).setAuthor(input.next());
+                break;
+            case 5:break;
+        
+        }
+        }
         return Choice = -1;
-    }
-    
+    }    
     
     public int DeleteABook(int Choice){
         Scanner input2=new Scanner(System.in);
         int counter;
+        int Type = -1;
+        
+        while(Type < 0){
+             System.out.print("\nChoose which list you would like to view:"
+                              +"\n1. View all Books"
+                              +"\n2. View All Magazines"
+                              +"\n3. Return to Menu\n");
+             Type = input.nextInt();             
+             
+             switch(Type){
+                 case 1: 
                 System.out.print("Here is a list of the books: \n");
                 
+               
                 for( counter = 0; counter < book1.size(); counter++){
                     System.out.print("\n" + ((counter + 1) + ". ") + book1.get(counter).getTitle());                    
                 }      
@@ -190,64 +225,103 @@ public class BookStore {
                 counter = input2.nextInt();
                 book1.remove(book1.get(counter - 1));
                 
-                counter = 1;
+                counter = 0;
                 // a loop to repack the array so their are no null entries between books
                 while (DeleteChoice != true){
                 if (book1.get(counter) == null && book1.get(counter + 1) != null){                    
-                //books.get(counter) = books.get(counter + 1);
+                //book1.get(counter) = book1.get(counter + 1);
+                book1.remove(book1.get(counter + 1));
+            }
+                else if (book1.get(counter) == null && book1.get(counter+1) == null){
+                    DeleteChoice = true;                    
+                }
+                }
+                counter++;
+                break;
+                 case 2:
+                System.out.print("Here is a list of the magazines: \n");
+                
+               
+                for( counter = 0; counter < mags.size(); counter++){
+                    System.out.print("\n" + ((counter + 1) + ". ") + mags.get(counter).getTitle());                    
+                }      
+                
+                DeleteChoice = false;
+                System.out.print("\nChoose the book you would like to remove from inventory:");
+                counter = input2.nextInt();
+                book1.remove(book1.get(counter - 1));
+                
+                counter = 0;
+                // a loop to repack the array so their are no null entries between books
+                while (DeleteChoice != true){
+                if (book1.get(counter) == null && book1.get(counter + 1) != null){                    
+                //book1.get(counter) = book1.get(counter + 1);
                 book1.remove(book1.get(counter + 1));
             }
                 else if (book1.get(counter) == null && book1.get(counter+1) == null){
                     DeleteChoice = true;                    
                 }
                 counter++;
-                }   
+                }  
+                break;
+                 case 3:break;                    
+        }
+        }
         return Choice = -1;
     }
     
-    public int ViewAllBooks(int Choice){
+    public int ViewAllBooks(int Choice) throws ParseException{
          int counter;
-         int Type = -1;
+         int Type = -1;         
+         String date;
          
          while(Type < 0){
              System.out.print("\nChoose which list you would like to view:"
                               +"\n1. View all Books"
                               +"\n2. View All Magazines"
-                              +"\n3. Return to Menu");
+                              +"\n3. Return to Menu\n");
              Type = input.nextInt();
              
              switch(Type){
                  case 1:
-                     System.out.print("Here is a list of the books: \n");
-                
-                for( counter = 0; counter < book1.size(); counter++){
-                    System.out.print("\n" + ((counter + 1) + ". ") + book1.get(counter).getTitle());                    
-                }      
-                System.out.print("\n ----------------");
-                Type = -1;
-                break;
-                        
-                 case 2:
-                     System.out.print("Here is a list of the books: \n");
+                     System.out.print("\nHere is a list of the books: \n");
                 
                      for( counter = 0; counter < book1.size(); counter++){
                      System.out.print("\n" + ((counter + 1) + ". ") + book1.get(counter).getTitle());                    
+                     }      
+                     System.out.print("\n ----------------");
+                
+                     System.out.print("\nEnter the book number to view details: ");
+                     counter = input.nextInt();
+                     System.out.print("\nTitle: " + book1.get(counter - 1).getTitle());
+                     System.out.print("\nPrice: " + book1.get(counter - 1).getPrice());
+                     System.out.print("\nCopies " + book1.get(counter - 1).getCopies());
+                     System.out.print("\nAuthor: " + book1.get(counter - 1).getAuthor());
+                     Type = -1;
+                     break;
+                        
+                 case 2:
+                     System.out.print("Here is a list of the magazines: \n");
+                
+                     for( counter = 0; counter < mags.size(); counter++){
+                     System.out.print("\n" + ((counter + 1) + ". ") + mags.get(counter).getTitle());                    
                     }      
                      System.out.print("\n ----------------");
+                     
+                     System.out.print("\nEnter the magazine number to view details: ");
+                     counter = input.nextInt() - 1;
+                     
+                     System.out.print("\n" + mags.get(counter));
+                     /*System.out.print("\nTitle: " + mags.get(counter - 1).getTitle());
+                     System.out.print("\nPrice: " + mags.get(counter - 1).getPrice());
+                     System.out.print("\nCopies " + mags.get(counter - 1).getCopies());
+                     date = formatter.format(mags.get(counter - 1).getCurrIssue());
+                     System.out.print ("\nCurrent Date: " + date);*/
                      Type = -1;
                      break;
                  case 3: break;
-             }
-         
-                /*System.out.print("Here is a list of the books: \n");
-                
-                for( counter = 0; counter < book1.size(); counter++){
-                    System.out.print("\n" + ((counter + 1) + ". ") + book1.get(counter).getTitle());                    
-                }      
-                System.out.print("\n ----------------");*/
+             }     
     }
         return Choice = -1;
-    }
-    
-    
+    }        
 }

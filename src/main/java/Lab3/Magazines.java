@@ -5,6 +5,9 @@
  */
 package Lab3;
 
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -14,6 +17,10 @@ import java.util.Date;
 public class Magazines extends Publication{
     private int orderQty;
     private Date currIssue;
+    
+    Format formatter = new SimpleDateFormat("MM-yyyy");
+    
+   
     
     public Magazines(){
         
@@ -38,13 +45,15 @@ public class Magazines extends Publication{
     public void adjustQty(int n){
         
     }
+    Format fmt = new SimpleDateFormat("MM-yyyy");
     @Override
     public String toString(){
-       String m = "";
-       m += 
+       String m = fmt.format(currIssue);
+        return "\nTitle: " + super.getTitle() +
        "\nQuantity Ordered: " + getOrderQty() +
-       "\nCurrent Issue Date: " + getCurrIssue();
-       return m;
+       "\nCurrent Issue Date: " + m +
+       "\nPrice: " + super.getPrice();
+       
     }
 
     /**

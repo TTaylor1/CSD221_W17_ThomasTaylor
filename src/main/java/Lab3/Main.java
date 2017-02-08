@@ -12,7 +12,7 @@ package Lab3;
  * @author 14034305
  */
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         // TODO code application logic here
         new BookStore().run();
     }
