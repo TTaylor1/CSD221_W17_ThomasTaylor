@@ -60,8 +60,7 @@ public class BookStore {
                     System.out.print("\n1. Add A Publication"
                                      + "\n2. Edit A Publication"
                                      + "\n3. Delete A Publication"
-                                     + "\n4. View Publications"
-                                     + "\n5. Exit the program.");
+                                     + "\n4. View Publications");
                     System.out.print("\nWhat would you like to do?");        
                     Choice1 = input.nextInt();        
                     do{
