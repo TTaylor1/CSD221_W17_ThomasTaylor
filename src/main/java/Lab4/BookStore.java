@@ -48,7 +48,8 @@ public class BookStore {
         
         while (Choice < 0){
             
-            System.out.print("\n1. Books" + 
+            System.out.print("---------Main---------"+
+                             "\n1. Books" + 
                              "\n2. Magazines" +
                              "\n3. Tickets" +
                              "\n 4. Exit");
@@ -56,11 +57,11 @@ public class BookStore {
             
             switch(Choice){
                 case 1:
-                case 2:
-                    System.out.print("\n1. Add A Publication"
-                                     + "\n2. Edit A Publication"
-                                     + "\n3. Delete A Publication"
-                                     + "\n4. View Publications");
+                    System.out.print("\n1. Add A Book"
+                                     + "\n2. Edit A Book"
+                                     + "\n3. Delete A Book"
+                                     + "\n4. Sell A Book"
+                                     + "\n5. Exit");
                     System.out.print("\nWhat would you like to do?");        
                     Choice1 = input.nextInt();        
                     do{
@@ -76,9 +77,37 @@ public class BookStore {
                         Choice = DeleteABook(Choice1);
                         break;
                     case 4:
-                        Choice = ViewAllBooks(Choice1);
+                        Choice = SellBook(Choice1);
                         break;
+                    case 5: break;
                     }}while (Choice != -1);
+                    break;
+                case 2:
+                    System.out.print("\n1. Add A Magazine"
+                                     + "\n2. Edit A Magazine"
+                                     + "\n3. Delete A Magazine"
+                                     + "\n4. Sell A Magazine"
+                                     + "\n5. Exit");
+                    System.out.print("\nWhat would you like to do?");        
+                    Choice1 = input.nextInt();        
+                    do{
+                     // switch statement to control which option the user chooses.
+                    switch(Choice1){
+                    case 1:
+                        Choice = AddABook(Choice1);
+                        break;
+                    case 2:
+                        Choice = EditABook(Choice1);  
+                        break;
+                    case 3:
+                        Choice = DeleteABook(Choice1);
+                        break;
+                    case 4:
+                        Choice = SellBook(Choice1);
+                        break;
+                    case 5: break;
+                    }}while (Choice != -1);
+                    break;
                 case 3:
                     System.out.println("-------------Tickets------------" + 
                                        "\n1. Sell a Ticket"+
@@ -86,6 +115,16 @@ public class BookStore {
                                        "\nWhat would you like to do?");
                     Choice2 = input.nextInt();
                     
+                    switch(Choice2){
+                        case 1:
+                            System.out.print("\nChoose a ticket to sell: " +
+                                             "\n1. Movie Ticket" + 
+                                             "\n2. Concert Ticket" + 
+                                             "\n3. Train Ticket" +
+                                             "\n4. Exit");
+                            
+                        case 2: break;
+                    }
                     
                     
                 }           
@@ -303,15 +342,15 @@ public class BookStore {
         return Choice = -1;
     }
     
-    public int ViewAllBooks(int Choice) throws ParseException{
+    public int SellBook(int Choice) throws ParseException{
          int counter;
          int Type = -1;         
          
          
          while(Type < 0){
-             System.out.print("\nChoose which list you would like to view:"
-                              +"\n1. View all Books"
-                              +"\n2. View All Magazines"
+             System.out.print("\nChoose which item you would like to sell:"
+                              +"\n1. Sell a Book"
+                              +"\n2. Sell a Magazine"
                               +"\n3. Return to Menu\n");
              Type = input.nextInt();
              
@@ -324,7 +363,7 @@ public class BookStore {
                      }      
                      System.out.print("\n ----------------");
                 
-                     System.out.print("\nEnter the book number to view details: ");
+                     System.out.print("\nEnter the book number to sell: ");
                      counter = input.nextInt();
                      
                      System.out.print("\n" + book1.get(counter));                   
@@ -339,7 +378,7 @@ public class BookStore {
                     }      
                      System.out.print("\n ----------------");
                      
-                     System.out.print("\nEnter the magazine number to view details: ");
+                     System.out.print("\nEnter the magazine number to sell: ");
                      counter = input.nextInt() - 1;
                      
                      System.out.print("\n" + mags.get(counter));                     

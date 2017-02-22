@@ -11,7 +11,18 @@ package Lab4;
  *
  * @author 14034305
  */
-public class Publication {
+public class Publication implements SaleableItem {
+    
+    
+    @Override
+    public void sellCopy() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public double getPrice() {        
+        return price;
+    }
     private String title;
     private double price;
     private int copies;
@@ -29,8 +40,7 @@ public class Publication {
         
     }
     
-    public void sellCopy(){        
-    }
+    
     
     @Override
     public String toString(){
@@ -58,9 +68,7 @@ public class Publication {
     /**
      * @return the price
      */
-    public double getPrice() {
-        return price;
-    }
+    
 
     /**
      * @param price the price to set
