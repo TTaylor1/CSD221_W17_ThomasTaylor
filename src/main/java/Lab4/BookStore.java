@@ -22,6 +22,7 @@ import java.util.Scanner;
  */
 public class BookStore {
     Scanner input=new Scanner(System.in);
+    ArrayList<Ticket> tick = new ArrayList<>();
     ArrayList<Books> book1 = new ArrayList<>();
     ArrayList<Magazines> mags = new ArrayList<>();
    Format formatter = new SimpleDateFormat("MM-yyyy");
@@ -32,7 +33,9 @@ public class BookStore {
         int Choice1 = -1;
         int Choice2 = -1;
         Date magDate = (Date) formatter.parseObject("08-2017");
-        
+    
+    
+    Ticket Train = new Ticket("Ottawa", 29.95);
     Magazines Ford = new Magazines(5, magDate, "Rawr", 10.0, 15);
     Books Dodge = new Books("Thomas", "Rawr on the Shore", 10, 30);
     Books Chevy = new Books("Timmy", "Rawr on the Water", 10, 30);
@@ -40,6 +43,7 @@ public class BookStore {
     Magazines Porsche = new Magazines(15, magDate, "Meow", 10.0, 15);
     
     // preassigned books/magazines added to the bookstore.
+    tick.add(Train);
     mags.add(Ford);
     book1.add(Dodge);
     book1.add(Chevy);
@@ -52,7 +56,8 @@ public class BookStore {
                              "\n1. Books" + 
                              "\n2. Magazines" +
                              "\n3. Tickets" +
-                             "\n 4. Exit");
+                             "\n4. Checkout" +
+                             "\n5. Exit");
             Choice = input.nextInt();
             
             switch(Choice){
@@ -125,6 +130,10 @@ public class BookStore {
                             
                         case 2: break;
                     }
+                case 4:
+                    break;
+                case 5:
+                    break;
                     
                     
                 }           
@@ -144,13 +153,13 @@ public class BookStore {
         Magazines magz = new Magazines();
         
         while (Type < 0){
-            System.out.print("\nWhat would you like to add?" 
+            /*System.out.print("\nWhat would you like to add?" 
                             +"\n1. Add a Book"
                             +"\n2. Add a Magazine"
-                            +"\n3. Back to Main Menu\n");
-            Type = input.nextInt();
+                            +"\n3. Back to Main Menu\n");*/
+            //Type = input.nextInt();
             
-            switch(Type){
+            switch(Choice){
                 case 1:
                     System.out.print("Add a Book");
         
@@ -168,7 +177,8 @@ public class BookStore {
                     bookz.setAuthor(author);
                     book1.add(bookz);
                     Type = -1;
-                    break;
+                    return Choice = -1;
+                    
                 case 2:
                     System.out.print("Add a Magazine");
         
@@ -187,11 +197,12 @@ public class BookStore {
                     magz.setPrice(price);
                     mags.add(magz);
                     Type = -1;
-                    break;
+                    return Choice = -1;
+                    
                 case 3: break;
             }    
         }
-        return Choice = -1;        
+             return -1;   
     }
     
     public int EditABook(int Choice) throws ParseException{
@@ -200,13 +211,13 @@ public class BookStore {
         int change = 0;
         
         while(Type < 0){
-         System.out.print("\nChoose which list you would like to view:"
+         /*System.out.print("\nChoose which list you would like to view:"
                               +"\n1. Edit a Book"
                               +"\n2. Edit a Magazine"
                               +"\n3. Return to Menu\n");
-             Type = input.nextInt();
+             Type = input.nextInt();*/
              
-             switch(Type){
+             switch(Choice){
                  case 1:
                      System.out.print("Here are the books currently in the system:");
                 // a loop to print out all the books in the store

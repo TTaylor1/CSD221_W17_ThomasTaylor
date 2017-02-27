@@ -27,7 +27,10 @@ public class Books extends Publication{
         public String toString(){
             String b = "";
             b +=
-             "\nAuthor " + getAuthor();
+             "\nTitle: " + super.getTitle() +
+       "\nCopies: " + super.getCopies() +
+       "\nPrice:" + super.getPrice() +
+       "\nAuthor: " + getAuthor();
             return b;
         }
 

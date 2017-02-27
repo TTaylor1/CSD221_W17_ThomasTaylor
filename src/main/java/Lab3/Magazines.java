@@ -52,7 +52,8 @@ public class Magazines extends Publication{
         return "\nTitle: " + super.getTitle() +
        "\nQuantity Ordered: " + getOrderQty() +
        "\nCurrent Issue Date: " + m +
-       "\nPrice: " + super.getPrice();
+       "\nPrice: " + super.getPrice() +
+        "\nCopies" + super.getCopies();
        
     }
 

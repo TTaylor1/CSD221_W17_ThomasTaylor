@@ -10,6 +10,15 @@ package Lab4;
  * @author 14034305
  */
 public class Ticket implements SaleableItem {
+    private String Title;
+    private Double price;
+    
+    public Ticket(){}
+    
+    public Ticket(String Title, Double price){
+        this.Title = Title;
+        this.price = price;
+    }
     
     @Override
     public void sellCopy() {
@@ -19,5 +28,19 @@ public class Ticket implements SaleableItem {
     @Override
     public double getPrice() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * @return the Title
+     */
+    public String getTitle() {
+        return Title;
+    }
+
+    /**
+     * @param Title the Title to set
+     */
+    public void setTitle(String Title) {
+        this.Title = Title;
     }
 }
