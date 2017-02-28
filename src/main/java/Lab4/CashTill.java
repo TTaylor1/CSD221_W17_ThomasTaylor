@@ -21,7 +21,7 @@ public class CashTill {
     {
         runningTotal = runningTotal + pPub.getPrice();
         pPub.sellCopy();
-        System.out.println("Sold " + pPub +  " @ " + pPub.getPrice() + "\nsubTotal = " + runningTotal);
+        System.out.println("Sold " + pPub.getTitle() +  " @ " + pPub.getPrice() + "\nsubTotal = " + runningTotal);
     }
     
     public void showTotal()
