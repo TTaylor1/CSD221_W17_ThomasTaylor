@@ -9,7 +9,7 @@ package Lab4;
  *
  * @author 14034305
  */
-public class CashTill {
+public class CashTill implements SaleableItem{
     private double runningTotal;
     
     CashTill()
@@ -27,5 +27,15 @@ public class CashTill {
     public void showTotal()
     {
         System.out.print("GRAND TOTAL: " + runningTotal);
+    }
+
+    @Override
+    public void sellCopy() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public double getPrice() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

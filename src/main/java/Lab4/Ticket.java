@@ -43,4 +43,11 @@ public class Ticket implements SaleableItem {
     public void setTitle(String Title) {
         this.Title = Title;
     }
+
+    /**
+     * @param price the price to set
+     */
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 }

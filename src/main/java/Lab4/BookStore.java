@@ -34,6 +34,8 @@ public class BookStore {
     
     
     Ticket Train = new Ticket("Ottawa", 29.95);
+    Ticket Movie = new Ticket("Ottawa", 29.95);
+    Ticket Bus = new Ticket("Ottawa", 29.95);
     Magazines Ford = new Magazines(5, magDate, "Rawr", 10.0, 15);
     Books Dodge = new Books("Thomas", "Rawr on the Shore", 10, 30);
     Books Chevy = new Books("Timmy", "Rawr on the Water", 10, 30);
@@ -42,6 +44,8 @@ public class BookStore {
     
     // preassigned books/magazines added to the bookstore.
     tick.add(Train);
+    tick.add(Bus);
+    tick.add(Movie);
     mags.add(Ford);
     book1.add(Dodge);
     book1.add(Chevy);
@@ -114,21 +118,33 @@ public class BookStore {
                     }}while (Choice != -1);
                     break;
                 case 3:
-                    System.out.println("-------------Tickets------------" + 
-                                       "\n1. Sell a Ticket"+
-                                       "\n2. Exit"+
-                                       "\nWhat would you like to do?");
+                    System.out.println("-------------Tickets------------"  
+                                     + "\n1. Add A Ticket"
+                                     + "\n2. Edit A Ticket"
+                                     + "\n3. Delete A Ticket"
+                                     + "\n4. Sell A Ticket"
+                                     + "\n5. Return to main Menu\n");
                     Choice2 = input.nextInt();
-                    
+                    Pub = "Ticket";
                     switch(Choice2){
                         case 1:
-                            //sellItem(29.95);
+                            Choice = AddABook(Choice1, Pub);
                             break;
-                            
-                        case 2: break;
+                        case 2:
+                            Choice = EditABook(Choice1, Pub);
+                            break;
+                        case 3:
+                            Choice = DeleteABook(Choice1, Pub);
+                            break;
+                        case 4:
+                            System.out.print("Currently out of order!");
+                            break;
+                        case 5:
+                            break;
                     }
+                    break;
                 case 4:
-                    System.out.print(Sales);
+                    System.out.print("Currently Out Of Order. Try again later!");
                     break;
                 case 5:
                     break;
@@ -142,12 +158,12 @@ public class BookStore {
         int quantity;
         String currentIssue;
         String title;
-        float price;
+        double price;
         Date magDate;
         
         Books bookz = new Books();
         Magazines magz = new Magazines();
-        
+        Ticket tickz = new Ticket();
         System.out.print("Add a " + Pub);
             
         if (Pub.equals("Book")){
@@ -182,7 +198,15 @@ public class BookStore {
                     magDate = (Date) formatter.parseObject(currentIssue);
                     magz.setCurrIssue(magDate);                    
                     mags.add(magz);
-                }
+        } else if (Pub.equals("Ticket")){
+            input.nextLine();
+            System.out.print("\nTicket Type: ");
+            title = input.nextLine();
+            tickz.setTitle(title);
+            System.out.print("\nTicket Price: ");
+            price = input.nextDouble();
+            tickz.setPrice(price);
+        }
                 
         return Choice = -1;   
     }
@@ -190,15 +214,16 @@ public class BookStore {
     public int EditABook(int Choice, String Pub) throws ParseException{
         int counter = 0;
         int change = 0;
+        System.out.print("Here are the "+ Pub + "'s currently in the system:");
              if(Pub.equals("Book")){
-                     System.out.print("Here are the books currently in the system:");
-                // a loop to print out all the books in the store
+                     
+                
                 if(book1.get(counter) == null)
                 {
                     System.out.print("\nThere are no books to edit.");
                      return Choice = -1;
                 }
-                
+                // a loop to print out all the books in the store
                 for( counter = 0; counter < book1.size(); counter++){
                     System.out.print("\n" + ((counter + 1) + ". ") + book1.get(counter).getTitle());                    
                 }    
@@ -234,14 +259,13 @@ public class BookStore {
                 }   
              } else if(Pub.equals("Magazine")){
       
-            System.out.print("Here are the Magazines currently in the system:");
-                // a loop to print out all the books in the store
+                
                 if(mags.get(counter) == null)
                 {
                     System.out.print("\nThere are no magazines to edit.");
                      return Choice = -1;
                 }
-                
+                // a loop to print out all the magazines in the store
                 for( counter = 0; counter < book1.size(); counter++){
                     System.out.print("\n" + ((counter + 1) + ". ") + book1.get(counter).getTitle());                    
                 }    
@@ -277,6 +301,38 @@ public class BookStore {
                     break;
                 case 5:break;
                 }
+            } else if (Pub.equals("Ticket")){
+                if(tick.get(counter) == null)
+                {
+                    System.out.print("\nThere are no tickets to edit.");
+                     return Choice = -1;
+                }
+                // a loop to print out all the tickets in the store
+                for( counter = 0; counter < tick.size(); counter++){
+                    System.out.print("\n" + ((counter + 1) + ". ") + tick.get(counter).getTitle());                    
+                }    
+        
+                System.out.print("\n Choose which Ticket you would like to edit: ");
+                counter = input.nextInt();
+        
+                System.out.print("\n Choose which section you would like to edit:" 
+                              +"\n1. Edit the Ticket Name"
+                              +"\n2. Edit the Price"
+                              +"\n3. Return to Menu\n");
+                change = input.nextInt();
+                switch(change){
+                case 1: 
+                    System.out.print("\n Edit the Ticket Name: ");
+                    tick.get(counter - 1).setTitle(input.next());
+                    break;
+                case 2:
+                    System.out.print("\nEdit the Ticket Price: ");
+                    tick.get(counter - 1).setPrice(input.nextDouble());
+                    break;
+                case 3:
+                    break;
+                
+                }
             }
        return Choice = -1;
     }
@@ -285,8 +341,9 @@ public class BookStore {
         Scanner input2=new Scanner(System.in);
         int counter;
         
+        System.out.print("Here is a list of the " + Pub + "'s: \n");
+        
             if (Pub.equals("Book")){
-                System.out.print("Here is a list of the books: \n");
                 
                 for( counter = 0; counter < book1.size(); counter++){
                     System.out.print("\n" + ((counter + 1) + ". ") + book1.get(counter).getTitle());                    
@@ -297,22 +354,27 @@ public class BookStore {
                 
             } else if (Pub.equals("Magazine")){
                 
-                System.out.print("Here is a list of the magazines: \n");
-                
                 for( counter = 0; counter < mags.size(); counter++){
                     System.out.print("\n" + ((counter + 1) + ". ") + mags.get(counter).getTitle());                    
                 }    
                 System.out.print("\nChoose the Magazine you would like to remove from inventory:");
                 counter = input2.nextInt();
                 book1.remove(book1.get(counter - 1));
+            } else if (Pub.equals("Ticket")){
+                for( counter = 0; counter < mags.size(); counter++){
+                    System.out.print("\n" + ((counter + 1) + ". ") + mags.get(counter).getTitle());                    
+                }    
+                System.out.print("\nChoose the Ticket you would like to remove from inventory:");
+                counter = input2.nextInt();
+                tick.remove(tick.get(counter - 1));
             }         
         return Choice = -1;
     }
     
     public int SellBook(int Choice, String Pub) throws ParseException{
-         int counter;
-            
-             if(Pub.equals("Book")){
+         //int counter;
+            System.out.print("System is currently out of order. Please try again later");
+             /*if(Pub.equals("Book")){
                      System.out.print("\nHere is a list of the books: \n");
                 
                      for( counter = 0; counter < book1.size(); counter++){
@@ -337,7 +399,7 @@ public class BookStore {
                      counter = input.nextInt() - 1;
                      Sales.sellItem(mags.get(counter));
                            
-             }   
+             }   */
         return Choice = -1;
     }        
 }
