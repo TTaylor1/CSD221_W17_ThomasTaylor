@@ -16,7 +16,7 @@ public class Publication implements SaleableItem {
     
     @Override
     public void sellCopy() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override

@@ -33,9 +33,9 @@ public class BookStore {
         String Pub;
     
     
-    Ticket Train = new Ticket("Ottawa", 29.95);
-    Ticket Movie = new Ticket("Ottawa", 29.95);
-    Ticket Bus = new Ticket("Ottawa", 29.95);
+    Ticket Train = new Ticket("Ottawa", "mr. sir");
+    Ticket Movie = new Ticket("Ottawa", "knight julius");
+    Ticket Bus = new Ticket("Ottawa", "Yupp");
     Magazines Ford = new Magazines(5, magDate, "Rawr", 10.0, 15);
     Books Dodge = new Books("Thomas", "Rawr on the Shore", 10, 30);
     Books Chevy = new Books("Timmy", "Rawr on the Water", 10, 30);
@@ -158,6 +158,7 @@ public class BookStore {
         int quantity;
         String currentIssue;
         String title;
+        String client;
         double price;
         Date magDate;
         
@@ -202,10 +203,10 @@ public class BookStore {
             input.nextLine();
             System.out.print("\nTicket Type: ");
             title = input.nextLine();
-            tickz.setTitle(title);
+            tickz.setDescription(title);
             System.out.print("\nTicket Price: ");
-            price = input.nextDouble();
-            tickz.setPrice(price);
+            client = input.next();
+            tickz.setClient(client);
         }
                 
         return Choice = -1;   
@@ -309,7 +310,7 @@ public class BookStore {
                 }
                 // a loop to print out all the tickets in the store
                 for( counter = 0; counter < tick.size(); counter++){
-                    System.out.print("\n" + ((counter + 1) + ". ") + tick.get(counter).getTitle());                    
+                    System.out.print("\n" + ((counter + 1) + ". ") + tick.get(counter).getDescription());                    
                 }    
         
                 System.out.print("\n Choose which Ticket you would like to edit: ");
@@ -323,11 +324,11 @@ public class BookStore {
                 switch(change){
                 case 1: 
                     System.out.print("\n Edit the Ticket Name: ");
-                    tick.get(counter - 1).setTitle(input.next());
+                    tick.get(counter - 1).setDescription(input.next());
                     break;
                 case 2:
                     System.out.print("\nEdit the Ticket Price: ");
-                    tick.get(counter - 1).setPrice(input.nextDouble());
+                    tick.get(counter - 1).setClient(input.next());
                     break;
                 case 3:
                     break;
@@ -372,9 +373,9 @@ public class BookStore {
     }
     
     public int SellBook(int Choice, String Pub) throws ParseException{
-         //int counter;
+         int counter;
             System.out.print("System is currently out of order. Please try again later");
-             /*if(Pub.equals("Book")){
+             if(Pub.equals("Book")){
                      System.out.print("\nHere is a list of the books: \n");
                 
                      for( counter = 0; counter < book1.size(); counter++){
@@ -396,10 +397,23 @@ public class BookStore {
                      System.out.print("\n ----------------");
                      
                      System.out.print("\nEnter the magazine number to sell: ");
-                     counter = input.nextInt() - 1;
-                     Sales.sellItem(mags.get(counter));
+                     counter = input.nextInt();
+                     Sales.sellItem(mags.get(counter - 1));
                            
-             }   */
+             } /*else if (Pub.equals("Ticket")){
+                    System.out.print("Here is a list of the magazines: \n");
+                
+                     for( counter = 0; counter < mags.size(); counter++){
+                     System.out.print("\n" + ((counter + 1) + ". ") + mags.get(counter).getTitle());                    
+                    }      
+                     System.out.print("\n ----------------");
+                     
+                     System.out.print("\nEnter the magazine number to sell: ");
+                     counter = input.nextInt() - 1;
+                     Sales.sellItem(tick.get(counter));
+            }*/
         return Choice = -1;
     }        
+
+    
 }

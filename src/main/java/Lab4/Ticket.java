@@ -10,14 +10,15 @@ package Lab4;
  * @author 14034305
  */
 public class Ticket implements SaleableItem {
-    private String Title;
-    private Double price;
+    private String Description;
+    
+    private String client;
     
     public Ticket(){}
     
-    public Ticket(String Title, Double price){
-        this.Title = Title;
-        this.price = price;
+    public Ticket(String Title, String client){
+        this.Description = Title;
+        this.client = client;
     }
     
     @Override
@@ -30,24 +31,32 @@ public class Ticket implements SaleableItem {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+
     /**
-     * @return the Title
+     * @return the Description
      */
-    public String getTitle() {
-        return Title;
+    public String getDescription() {
+        return Description;
     }
 
     /**
-     * @param Title the Title to set
+     * @param Description the Description to set
      */
-    public void setTitle(String Title) {
-        this.Title = Title;
+    public void setDescription(String Description) {
+        this.Description = Description;
     }
 
     /**
-     * @param price the price to set
+     * @return the client
      */
-    public void setPrice(Double price) {
-        this.price = price;
+    public String getClient() {
+        return client;
+    }
+
+    /**
+     * @param client the client to set
+     */
+    public void setClient(String client) {
+        this.client = client;
     }
 }
