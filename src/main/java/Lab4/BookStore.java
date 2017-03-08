@@ -59,7 +59,9 @@ public class BookStore {
                              "\n2. Magazines" +
                              "\n3. Tickets" +
                              "\n4. Checkout" +
-                             "\n5. Exit");
+                             "\n5. Exit" + 
+                             "\nChoose the section you want: ");
+            
             Choice = input.nextInt();
             
             switch(Choice){
@@ -201,7 +203,9 @@ public class BookStore {
                     magDate = (Date) formatter.parseObject(currentIssue);
                     magz.setCurrIssue(magDate);                    
                     mags.add(magz);
+                    
         } else if (Pub.equals("Ticket")){
+            
             input.nextLine();
             System.out.print("\nTicket Type: ");
             title = input.nextLine();
@@ -416,6 +420,4 @@ public class BookStore {
             }
         return Choice = -1;
     }        
-
-    
 }
