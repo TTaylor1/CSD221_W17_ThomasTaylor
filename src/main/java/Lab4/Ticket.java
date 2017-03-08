@@ -11,16 +11,27 @@ package Lab4;
  */
 public class Ticket implements SaleableItem {
     private String Description;
-    
+    private double Price;
     private String client;
     
     public Ticket(){}
     
-    public Ticket(String Title, String client){
+    public Ticket(String Title, double Price, String client){
         this.Description = Title;
+        this.Price = Price;
         this.client = client;
     }
     
+    
+     @Override
+        public String toString(){
+            String t = "";
+            t +=
+             "\nDescription: " + getDescription() +
+             "\nPrice: " + getPrice() +             
+             "\nClient: " + getClient();             
+            return t;
+        }
     @Override
     public void sellCopy() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -28,7 +39,7 @@ public class Ticket implements SaleableItem {
 
     @Override
     public double getPrice() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return Price;
     }
 
 
@@ -58,5 +69,12 @@ public class Ticket implements SaleableItem {
      */
     public void setClient(String client) {
         this.client = client;
+    }
+
+    /**
+     * @param Price the Price to set
+     */
+    public void setPrice(double Price) {
+        this.Price = Price;
     }
 }

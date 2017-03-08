@@ -33,9 +33,9 @@ public class BookStore {
         String Pub;
     
     
-    Ticket Train = new Ticket("Ottawa", "mr. sir");
-    Ticket Movie = new Ticket("Ottawa", "knight julius");
-    Ticket Bus = new Ticket("Ottawa", "Yupp");
+    Ticket Train = new Ticket("Hockey", 29.95, "Essar Arena");
+    Ticket Bus = new Ticket("Concert", 120.00, "Nirvana");
+    Ticket Movie = new Ticket("Kids", 50.00, "Teletubbies");
     Magazines Ford = new Magazines(5, magDate, "Rawr", 10.0, 15);
     Books Dodge = new Books("Thomas", "Rawr on the Shore", 10, 30);
     Books Chevy = new Books("Timmy", "Rawr on the Water", 10, 30);
@@ -87,7 +87,7 @@ public class BookStore {
                     case 4:
                         Choice = SellBook(Choice1, Pub);
                         break;
-                    case 5: break;
+                    case 5:break;
                     }}while (Choice != -1);
                     break;
                 case 2:
@@ -137,7 +137,8 @@ public class BookStore {
                             Choice = DeleteABook(Choice1, Pub);
                             break;
                         case 4:
-                            System.out.print("Currently out of order!");
+                            //System.out.print("Currently out of order!");
+                            Choice = SellBook(Choice1, Pub);
                             break;
                         case 5:
                             break;
@@ -147,6 +148,7 @@ public class BookStore {
                     System.out.print("Currently Out Of Order. Try again later!");
                     break;
                 case 5:
+                    Sales.showTotal();
                     break;
                     
                 }           
@@ -374,7 +376,7 @@ public class BookStore {
     
     public int SellBook(int Choice, String Pub) throws ParseException{
          int counter;
-            System.out.print("System is currently out of order. Please try again later");
+           
              if(Pub.equals("Book")){
                      System.out.print("\nHere is a list of the books: \n");
                 
@@ -385,7 +387,7 @@ public class BookStore {
                 
                      System.out.print("\nEnter the book number to sell: ");
                      counter = input.nextInt();
-                     Sales.sellItem(book1.get(counter));
+                     Sales.sellItem(book1.get(counter - 1), Pub);
                            
              } else if(Pub.equals("Magazine")){        
                  
@@ -398,20 +400,20 @@ public class BookStore {
                      
                      System.out.print("\nEnter the magazine number to sell: ");
                      counter = input.nextInt();
-                     Sales.sellItem(mags.get(counter - 1));
+                     Sales.sellItem(mags.get(counter - 1), Pub);
                            
-             } /*else if (Pub.equals("Ticket")){
-                    System.out.print("Here is a list of the magazines: \n");
+             } else if (Pub.equals("Ticket")){
+                    System.out.print("Here is a list of the Tickets: \n");
                 
-                     for( counter = 0; counter < mags.size(); counter++){
-                     System.out.print("\n" + ((counter + 1) + ". ") + mags.get(counter).getTitle());                    
+                     for( counter = 0; counter < tick.size(); counter++){
+                     System.out.print("\n" + ((counter + 1) + ". ") + tick.get(counter).getDescription());                    
                     }      
                      System.out.print("\n ----------------");
                      
-                     System.out.print("\nEnter the magazine number to sell: ");
-                     counter = input.nextInt() - 1;
-                     Sales.sellItem(tick.get(counter));
-            }*/
+                     System.out.print("\nEnter the ticket number to sell: ");
+                     counter = input.nextInt();
+                     Sales.sellItem(tick.get(counter - 1), Pub);
+            }
         return Choice = -1;
     }        
 

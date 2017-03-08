@@ -30,9 +30,9 @@ public class Books extends Publication{
             String b = "";
             b +=
              "\nTitle: " + super.getTitle() +
+             "\nPrice: " + super.getPrice() +
              "\nCopies: " + getCopies() +
-             "\nAuthor: " + getAuthor() +
-             "\nPrice: " + super.getPrice();
+             "\nAuthor: " + getAuthor();             
             return b;
         }
 

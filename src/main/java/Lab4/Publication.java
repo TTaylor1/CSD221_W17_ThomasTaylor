@@ -16,6 +16,12 @@ public class Publication implements SaleableItem {
     
     @Override
     public void sellCopy() {
+        int now;
+        
+        now = getCopies();
+        
+        now = now - 1;
+        
         
     }
 

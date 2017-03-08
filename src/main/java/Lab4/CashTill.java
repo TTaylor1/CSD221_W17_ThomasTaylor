@@ -17,10 +17,12 @@ public class CashTill{
              runningTotal = 0;   
             }
     
-    public void sellItem(Publication pPub)
+    public void sellItem(SaleableItem pPub, String Pub)
     {
         runningTotal = runningTotal + pPub.getPrice();
-        //pPub.sellCopy();
+        if (Pub.equals("Book") || Pub.equals("Magazine")){
+        pPub.sellCopy();
+        }
         System.out.println("Sold " + pPub +  " @ " + pPub.getPrice() + "\nsubTotal = " + runningTotal);
     }
     
