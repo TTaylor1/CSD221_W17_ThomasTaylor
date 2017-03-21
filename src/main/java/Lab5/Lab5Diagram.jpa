@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jpa:entity-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:java="http://jcp.org/en/jsr/detail?id=270" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jpa="http://java.sun.com/xml/ns/persistence/orm" v="1.5.4" xs="false" id="_14901015671501" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_1.xsd">
+    <jpa:mapped-superclass xre="false" sm="false" abs="false" class="Publication" visibile="true" minimized="false" rootElement="_14901015671501" id="_1490101599790">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="Title" id="_14901017449624"/>
+            <basic attribute-type="String" visibile="true" name="Price" id="_14901017459225"/>
+            <basic attribute-type="String" visibile="true" name="Copies" id="_14901017463386"/>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_14901017409863"/>
+        </jpa:attributes>
+    </jpa:mapped-superclass>
+    <jpa:entity xre="false" sm="false" abs="false" class="Magazine" superclassId="_1490101599790" visibile="true" minimized="false" rootElement="_14901015671501" id="_1490101774918">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="Quantity" id="_14901018134669"/>
+            <basic attribute-type="String" visibile="true" name="currentIssue" id="_149010181580210"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity xre="false" sm="false" abs="false" class="Book" superclassId="_1490101599790" visibile="true" minimized="false" rootElement="_14901015671501" id="_1490101838966">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="Author" id="_149010184835413"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity xre="false" sm="false" abs="false" class="ticket" visibile="true" minimized="false" rootElement="_14901015671501" id="_1490102824198">
+        <jpa:attributes>
+            <basic attribute-type="String" visibile="true" name="Title" id="_149010283156239"/>
+            <basic attribute-type="String" visibile="true" name="Price" id="_149010283302640"/>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_149010282419837"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:diagram>
+        <plane elementRef="_14901015671501">
+            <shape elementRef="_1490101599790">
+                <Bounds x="161.0" y="103.0" width="159.0" height="134.0"/>
+            </shape>
+            <shape elementRef="_1490101774918">
+                <Bounds x="333.0" y="353.0" width="150.0" height="79.0"/>
+            </shape>
+            <shape elementRef="_1490101838966">
+                <Bounds x="46.0" y="353.0" width="128.0" height="58.0"/>
+            </shape>
+            <shape elementRef="_1490102824198">
+                <Bounds x="532.0" y="175.0" width="128.0" height="113.0"/>
+            </shape>
+        </plane>
+    </jpa:diagram>
+</jpa:entity-mappings>
