@@ -30,12 +30,6 @@
             <jpa:id attribute-type="Long" visibile="true" name="id" id="_149080444102755"/>
         </jpa:attributes>
     </jpa:entity>
-    <jpa:entity xre="false" sm="false" abs="false" class="cashTill" visibile="true" minimized="false" rootElement="_14901015671501" id="_1490804515971">
-        <jpa:attributes>
-            <basic attribute-type="double" visibile="true" name="runningTotal" id="_149080455558362"/>
-            <jpa:id attribute-type="Long" visibile="true" name="id" id="_149080451597260"/>
-        </jpa:attributes>
-    </jpa:entity>
     <jpa:diagram>
         <plane elementRef="_14901015671501">
             <shape elementRef="_1490101774918">
@@ -52,9 +46,6 @@
             </shape>
             <shape elementRef="_1490804441027">
                 <Bounds x="483.0" y="211.0" width="131.0" height="134.0"/>
-            </shape>
-            <shape elementRef="_1490804515971">
-                <Bounds x="694.0" y="69.0" width="140.0" height="92.0"/>
             </shape>
         </plane>
     </jpa:diagram>

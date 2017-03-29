@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Publication implements Serializable {
+public abstract class Publication implements Serializable, SaleableItem {
 
     @Basic
     private double Price;
@@ -26,7 +26,7 @@ public class Publication implements Serializable {
     public Publication() {
 
     }
-
+   
     public double getPrice() {
         return this.Price;
     }
@@ -34,7 +34,7 @@ public class Publication implements Serializable {
     public void setPrice(double Price) {
         this.Price = Price;
     }
-
+   
     public int getCopies() {
         return this.Copies;
     }
@@ -42,7 +42,7 @@ public class Publication implements Serializable {
     public void setCopies(int Copies) {
         this.Copies = Copies;
     }
-
+   
     public String getTitle() {
         return this.Title;
     }
@@ -50,7 +50,7 @@ public class Publication implements Serializable {
     public void setTitle(String Title) {
         this.Title = Title;
     }
-
+   
     public Long getId() {
         return this.id;
     }
