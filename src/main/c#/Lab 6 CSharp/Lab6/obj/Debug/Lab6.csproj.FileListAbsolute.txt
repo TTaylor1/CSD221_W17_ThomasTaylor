@@ -1,0 +1,6 @@
+C:\Users\Tom\Documents\c#\src\main\c#\Lab 6 CSharp\Lab6\bin\Debug\Lab6.exe.config
+C:\Users\Tom\Documents\c#\src\main\c#\Lab 6 CSharp\Lab6\bin\Debug\Lab6.exe
+C:\Users\Tom\Documents\c#\src\main\c#\Lab 6 CSharp\Lab6\bin\Debug\Lab6.pdb
+C:\Users\Tom\Documents\c#\src\main\c#\Lab 6 CSharp\Lab6\obj\Debug\Lab6.csprojResolveAssemblyReference.cache
+C:\Users\Tom\Documents\c#\src\main\c#\Lab 6 CSharp\Lab6\obj\Debug\Lab6.exe
+C:\Users\Tom\Documents\c#\src\main\c#\Lab 6 CSharp\Lab6\obj\Debug\Lab6.pdb
