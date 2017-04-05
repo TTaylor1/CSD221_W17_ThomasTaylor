@@ -368,8 +368,8 @@ public class BookStore {
                 counter = input2.nextInt();
                 book1.remove(book1.get(counter - 1));
             } else if (Pub.equals("Ticket")){
-                for( counter = 0; counter < mags.size(); counter++){
-                    System.out.print("\n" + ((counter + 1) + ". ") + mags.get(counter).getTitle());                    
+                for( counter = 0; counter < tick.size(); counter++){
+                    System.out.print("\n" + ((counter + 1) + ". ") + tick.get(counter).getDescription());                    
                 }    
                 System.out.print("\nChoose the Ticket you would like to remove from inventory:");
                 counter = input2.nextInt();

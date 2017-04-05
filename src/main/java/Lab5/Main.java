@@ -5,16 +5,7 @@
  */
 package Lab5;
 
-import java.util.Date;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import Lab5.entities.*;
-import java.text.ParseException;
-import java.util.Scanner;
+
 
 /**
  *

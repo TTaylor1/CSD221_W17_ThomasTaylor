@@ -5,7 +5,9 @@
  */
 package Lab5;
 
+import java.text.Format;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -24,21 +26,46 @@ public class App {
     Book book = new Book();
     Magazine Mag = new Magazine();
     Ticket tick = new Ticket();
+    Format formatter = new SimpleDateFormat("MM-yyyy");
     EntityManagerFactory emf=null;
     EntityManager em=null;
     
-    public void run(){
-        
-        
-        
+    public void run(){  
         
         try{
             emf=Persistence.createEntityManagerFactory("Lab5_Thomas_taylor");
             em=emf.createEntityManager();
             Logger.getLogger(Main.class.getName()).log(Level.INFO, "Entity Manager created ("+emf+")");
-            em.getTransaction().begin(); 
+           
             Scanner input=new Scanner(System.in);
+            em.getTransaction().begin();
             
+            Date magDate = (Date) formatter.parseObject("08-2017");
+            java.sql.Date magDate1 = new java.sql.Date(magDate.getTime());
+        Book book1 = new Book();
+        book1.setAuthor("Tom");
+        book1.setTitle("Hunger");
+        book1.setCopies(10);
+        book1.setPrice(10.99);
+        em.persist(book1);
+        
+        Book book2 = new Book();
+        book2.setAuthor("Timmy");
+        book2.setTitle("Thirst");
+        book2.setCopies(15);
+        book2.setPrice(15.99);
+        em.persist(book2);
+        
+        Magazine mag1 = new Magazine();
+        mag1.setTitle("Drummer");
+        mag1.setPrice(12.99);
+        mag1.setCopies(20);
+        mag1.setCurrentIssue(magDate1);
+        mag1.setQuantity(10);
+        em.persist(mag1);
+        
+        
+        em.getTransaction().commit();
           
             
             int Choice = -1;
@@ -46,7 +73,7 @@ public class App {
             int Choice2 = -1;
             String Pub;
             while (Choice < 0){
-            
+            em.getTransaction().begin();
             System.out.print("---------Main---------"+
                              "\n1. Books" + 
                              "\n2. Magazines" +
@@ -77,7 +104,7 @@ public class App {
                         Choice = EditABook(Choice1, Pub);  
                         break;
                     case 3:
-                        //Choice = DeleteABook(Choice1, Pub);
+                        Choice = DeleteABook(Choice1, Pub);
                         break;
                     case 4:
                         //Choice = SellBook(Choice1, Pub);
@@ -88,7 +115,7 @@ public class App {
                     }}while (Choice != -1);
                     break;
                 case 2:
-                    /*System.out.print("\n1. Add A Magazine"
+                    System.out.print("\n1. Add A Magazine"
                                      + "\n2. Edit A Magazine"
                                      + "\n3. Delete A Magazine"
                                      + "\n4. Sell A Magazine"
@@ -106,15 +133,15 @@ public class App {
                         Choice = EditABook(Choice1, Pub);  
                         break;
                     case 3:
-                       Choice = DeleteABook(Choice1, Pub);
+                        Choice = DeleteABook(Choice1, Pub);
                         break;
                     case 4:
-                        Choice = SellBook(Choice1, Pub);
+                        //Choice = SellBook(Choice1, Pub);
                         break;
                     case 5: break;
                     }}while (Choice != -1);
                     break;
-                case 3:
+                /*case 3:
                     System.out.println("-------------Tickets------------"  
                                      + "\n1. Add A Ticket"
                                      + "\n2. Edit A Ticket"
@@ -146,7 +173,7 @@ public class App {
                     break;
                 case 5:
                     //Sales.showTotal();
-                    
+                    em.getTransaction().commit();
                     break;
                     
                 }  
@@ -207,24 +234,26 @@ public int AddABook(int Choice, String Pub)throws ParseException{
                     book.setAuthor(author);
                     em.persist(book);
                     em.getTransaction().commit();
-        } /*else if (Pub.equals("Magazine")){    
+        } else if (Pub.equals("Magazine")){    
                 
                     System.out.print("\nTitle: ");
                     title = input.next();
-                    magz.setTitle(title);
+                    Mag.setTitle(title);
                     System.out.print("\nQuantity to Order: ");
                     quantity = input.nextInt();
-                    magz.setOrderQty(quantity);
+                    Mag.setQuantity(quantity);
                     System.out.print("\nPrice per copy: ");
                     price = input.nextFloat();
-                    magz.setPrice(price);
+                    Mag.setPrice(price);
                     System.out.print("\nDate of current Issue: ");
                     currentIssue = input.next();
-                    //magDate = (Date) formatter.parseObject(currentIssue);
-                    //magz.setCurrIssue(magDate);                    
-                    Magazine.add(magz);
+                    magDate = (Date) formatter.parseObject(currentIssue);
+                    java.sql.Date magDate1 = new java.sql.Date(magDate.getTime());
+                    Mag.setCurrentIssue(magDate1);                    
+                    em.persist(Mag);
+                    em.getTransaction().commit();
                     
-        } else if (Pub.equals("Ticket")){
+        } /*else if (Pub.equals("Ticket")){
             
             input.nextLine();
             System.out.print("\nTicket Type: ");
@@ -234,7 +263,7 @@ public int AddABook(int Choice, String Pub)throws ParseException{
             client = input.next();
             tickz.setClient(client);
         }*/
-        em.getTransaction().commit();
+        
         return Choice = -1;   
     }
 public int EditABook(int Choice, String Pub) throws ParseException{
@@ -243,7 +272,7 @@ public int EditABook(int Choice, String Pub) throws ParseException{
         Scanner input=new Scanner(System.in);
         System.out.print("Here are the "+ Pub + "'s currently in the system:");
              if(Pub.equals("Book")){
-                     
+                Book bookEdit = new Book();     
                 List<Book> ListOfBooks = em.createQuery("SELECT c FROM Book c").getResultList();
                 if(ListOfBooks == null)
                 {
@@ -252,15 +281,15 @@ public int EditABook(int Choice, String Pub) throws ParseException{
                 }
                 // a loop to print out all the books in the store
             
-                System.out.println("List of Books\n");
+                System.out.println("\nList of Books\n");
                 for(Book book:ListOfBooks){
-                System.out.println("\n"+counter+"."+book.getTitle());
+                System.out.println("\n"+book.getId()+"."+book.getTitle());
                 counter += 1;
             }
         
                 System.out.print("\n Choose which book you would like to edit: ");
                 counter = input.nextInt();
-        
+                bookEdit = ListOfBooks.get(counter - 1);
                 System.out.print("\n Choose which section you would like to edit:" 
                               +"\n1. Edit the Title"
                               +"\n2. Edit the Order Quantity"
@@ -269,37 +298,45 @@ public int EditABook(int Choice, String Pub) throws ParseException{
                               +"\n5. Return to Menu\n");
                 change = input.nextInt();
                 switch(change){
-                /*case 1: 
+                case 1: 
                     System.out.print("\n Edit the Title: ");
-                    book.getId.setTitle(input.next());
+                    input = new Scanner(System.in);
+                    bookEdit.setTitle(input.nextLine());
+                    em.persist(bookEdit);
                     break;
                 case 2:
                     System.out.print("\nEdit the Order Quantity: ");
-                    Book.get(counter - 1).setCopies(input.nextInt());
+                    bookEdit.setCopies(input.nextInt());
+                    em.persist(bookEdit);
                     break;
                 case 3:
                     System.out.print("\nEdit the Price: ");
-                    Book.get(counter - 1).setPrice(input.nextInt());
+                    bookEdit.setPrice(input.nextInt());
+                    em.persist(bookEdit);
                     break;
                 case 4:
                     System.out.print("\nEdit the Author: ");
-                    Book.get(counter - 1).setAuthor(input.next());
-                    break;*/
-                case 5:break;
+                    bookEdit.setAuthor(input.next());
+                    em.persist(bookEdit);
+                    break;
+                case 5:
+                    
+                    break;
                 }   
-             } /*else if(Pub.equals("Magazine")){
+             } else if(Pub.equals("Magazine")){
       
-                
-                if(Magazine.get(counter) == null)
+                List<Magazine> ListOfMagazines = em.createQuery("SELECT c FROM Magazine c").getResultList();
+                if(ListOfMagazines == null)
                 {
                     System.out.print("\nThere are no magazines to edit.");
                      return Choice = -1;
                 }
                 // a loop to print out all the magazines in the store
-                for( counter = 0; counter < book1.size(); counter++){
-                    System.out.print("\n" + ((counter + 1) + ". ") + book1.get(counter).getTitle());                    
-                }    
-        
+                System.out.println("\nList of Magazines");
+                for(Magazine mag:ListOfMagazines){
+                System.out.println("\n"+mag.getId()+"."+mag.getTitle());
+                counter += 1;
+                }
                 System.out.print("\n Choose which Magazine you would like to edit: ");
                 counter = input.nextInt();
         
@@ -311,7 +348,7 @@ public int EditABook(int Choice, String Pub) throws ParseException{
                               +"\n5. Return to Menu\n");
                 change = input.nextInt();
                 switch(change){
-                case 1: 
+                /*case 1: 
                     System.out.print("\n Edit the Title: ");
                     mags.get(counter - 1).setTitle(input.next());
                     break;
@@ -328,10 +365,12 @@ public int EditABook(int Choice, String Pub) throws ParseException{
                     String currentIssue = input.next();
                     Date magDate = (Date) formatter.parseObject(currentIssue);
                     Magazine.get(counter - 1).setCurrIssue(magDate);
+                    break;*/
+                case 5:
+                    
                     break;
-                case 5:break;
                 }
-            } else if (Pub.equals("Ticket")){
+            } /*else if (Pub.equals("Ticket")){
                 if(Ticket.get(counter) == null)
                 {
                     System.out.print("\nThere are no tickets to edit.");
@@ -364,9 +403,57 @@ public int EditABook(int Choice, String Pub) throws ParseException{
                 
                 }
             }   */
+             em.getTransaction().commit();
        return Choice = -1;
     }
-   }
+
+public int DeleteABook(int Choice, String Pub){
+        Scanner input2=new Scanner(System.in);
+        int counter = 1;
+        
+        System.out.print("Here is a list of the " + Pub + "'s: \n");
+        
+            if (Pub.equals("Book")){
+                Book bookDel = new Book();
+                List<Book> ListOfBooks = em.createQuery("SELECT c FROM Book c").getResultList();
+                System.out.println("\nList of Books\n");
+                for(Book book:ListOfBooks){
+                System.out.println("\n"+counter+"."+book.getTitle());
+                counter += 1;
+                }    
+                
+                System.out.print("\nChoose the book you would like to remove from inventory:");
+                
+                counter = input2.nextInt();
+                bookDel = ListOfBooks.get(counter - 1);
+                em.remove(bookDel);
+                em.getTransaction().commit();
+                
+            } else if (Pub.equals("Magazine")){
+                Magazine magDel = new Magazine();
+                List<Magazine> ListOfMagazines = em.createQuery("SELECT c FROM Magazine c").getResultList();
+                System.out.println("\nList of Books\n");
+                for(Magazine book:ListOfMagazines){
+                System.out.println("\n"+counter+"."+book.getTitle());
+                counter += 1;
+                }      
+                System.out.print("\nChoose the Magazine you would like to remove from inventory:");
+                counter = input2.nextInt();
+                magDel = ListOfMagazines.get(counter - 1);
+                em.remove(magDel);
+                em.getTransaction().commit();
+            } /*else if (Pub.equals("Ticket")){
+                for( counter = 0; counter < tick.size(); counter++){
+                    System.out.print("\n" + ((counter + 1) + ". ") + tick.get(counter).getDescription());                    
+                }    
+                System.out.print("\nChoose the Ticket you would like to remove from inventory:");
+                counter = input2.nextInt();
+                tick.remove(tick.get(counter - 1));
+            }        */ 
+        return Choice = -1;
+    }
+}
+   
   
 
     
