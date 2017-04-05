@@ -5,9 +5,13 @@
  */
 package Lab5;
 
+
+import Lab5.Controllers.*;
+import Lab5.Controllers.exceptions.NonexistentEntityException;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -17,6 +21,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import lab5.entities.*;
+import java.lang.NullPointerException;
 
 /**
  *
@@ -29,7 +34,9 @@ public class App {
     Format formatter = new SimpleDateFormat("MM-yyyy");
     EntityManagerFactory emf=null;
     EntityManager em=null;
-    
+    BookJpaController bookController = new BookJpaController(emf);
+    MagazineJpaController magController = new MagazineJpaController(emf);
+    List<Book> ListOfBooks = new ArrayList<>();
     public void run(){  
         
         try{
@@ -73,7 +80,7 @@ public class App {
             int Choice2 = -1;
             String Pub;
             while (Choice < 0){
-            em.getTransaction().begin();
+            
             System.out.print("---------Main---------"+
                              "\n1. Books" + 
                              "\n2. Magazines" +
@@ -205,7 +212,7 @@ public class App {
      * @return
      */
     }
-public int AddABook(int Choice, String Pub)throws ParseException{
+public int AddABook(int Choice, String Pub)throws ParseException, Exception{
         Scanner input=new Scanner(System.in);
         String author;
         int quantity;
@@ -232,8 +239,8 @@ public int AddABook(int Choice, String Pub)throws ParseException{
                     System.out.print("\nAuthor: ");
                     author = input.next();
                     book.setAuthor(author);
-                    em.persist(book);
-                    em.getTransaction().commit();
+                    bookController.create(book);
+                    
         } else if (Pub.equals("Magazine")){    
                 
                     System.out.print("\nTitle: ");
@@ -250,8 +257,8 @@ public int AddABook(int Choice, String Pub)throws ParseException{
                     magDate = (Date) formatter.parseObject(currentIssue);
                     java.sql.Date magDate1 = new java.sql.Date(magDate.getTime());
                     Mag.setCurrentIssue(magDate1);                    
-                    em.persist(Mag);
-                    em.getTransaction().commit();
+                    magController.create(Mag);
+                    
                     
         } /*else if (Pub.equals("Ticket")){
             
@@ -273,7 +280,7 @@ public int EditABook(int Choice, String Pub) throws ParseException{
         System.out.print("Here are the "+ Pub + "'s currently in the system:");
              if(Pub.equals("Book")){
                 Book bookEdit = new Book();     
-                List<Book> ListOfBooks = em.createQuery("SELECT c FROM Book c").getResultList();
+                ListOfBooks = bookController.findBookEntities();
                 if(ListOfBooks == null)
                 {
                     System.out.print("\nThere are no books to edit.");
@@ -407,10 +414,10 @@ public int EditABook(int Choice, String Pub) throws ParseException{
        return Choice = -1;
     }
 
-public int DeleteABook(int Choice, String Pub){
+public int DeleteABook(int Choice, String Pub) throws NonexistentEntityException{
         Scanner input2=new Scanner(System.in);
         int counter = 1;
-        
+        long Id;
         System.out.print("Here is a list of the " + Pub + "'s: \n");
         
             if (Pub.equals("Book")){
@@ -418,16 +425,17 @@ public int DeleteABook(int Choice, String Pub){
                 List<Book> ListOfBooks = em.createQuery("SELECT c FROM Book c").getResultList();
                 System.out.println("\nList of Books\n");
                 for(Book book:ListOfBooks){
-                System.out.println("\n"+counter+"."+book.getTitle());
+                System.out.println("\n"+book.getId()+"."+book.getTitle());
                 counter += 1;
                 }    
                 
                 System.out.print("\nChoose the book you would like to remove from inventory:");
                 
                 counter = input2.nextInt();
-                bookDel = ListOfBooks.get(counter - 1);
-                em.remove(bookDel);
-                em.getTransaction().commit();
+                bookDel = ListOfBooks.get(counter - 1); 
+                //Id = bookDel.getId();
+                bookController.destroy(bookDel.getId());
+                
                 
             } else if (Pub.equals("Magazine")){
                 Magazine magDel = new Magazine();
