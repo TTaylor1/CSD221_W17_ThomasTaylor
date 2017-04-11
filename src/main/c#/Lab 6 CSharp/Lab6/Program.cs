@@ -6,31 +6,57 @@ using System.Threading.Tasks;
 
 namespace Lab6
 {
-    class Program
+    public class Program
     {
-        static List<Publication> Mags = new List<Publication>();
+        static List<Magazine> Mags = new List<Magazine>();
         static List<Book> Books = new List<Book>();
         static List<Publication> list = new List<Publication>();
+        public static CashTill Sales = new CashTill();
+        
         static void Main(string[] args)
         {
            /* Console.WriteLine("Hello World");
             Publication pub = new Publication();
             pub.Title = "I Love Programming";
             pub.Price = 10.99;
-            pub.Copies = 10;
+            pub.Copies = 10;*/
 
             Book book = new Book();
             book.Author = "Thomas Taylor";
-            book.Title = "I Love Linux";
+            book.Title = "I Love Java";
             book.Copies = 12;
             book.Price = 100;
+
+            Book book1 = new Book();
+            book1.Author = "Thomas Taylor jr";
+            book1.Title = "I Love Linux : The Lies";
+            book1.Copies = 12;
+            book1.Price = 100;
+            
+            
+            Magazine mag = new Magazine();
+            mag.Title = "Yessir";
+            mag.OrderQty = 10;
+            mag.Price = 19.99;
+
+            Magazine mag1 = new Magazine();
+            mag.Title = "Yesmaam";
+            mag.OrderQty = 10;
+            mag.Price = 19.99;
+
+            Books.Add(book);
+            Books.Add(book1);
+            Mags.Add(mag);
+            Mags.Add(mag1);
+
+            /*
             Console.Write("\n");
             Console.WriteLine(pub);
             Console.Write("\n");
             Console.WriteLine(book);
 
-            list.Add(pub);
             list.Add(book);
+            list.Add(book1);
 
             foreach (Publication p in list)
             {
@@ -40,7 +66,8 @@ namespace Lab6
             int choice = -1;
             int choice1 = -1;
             string Pub;
-
+            
+            
 
             while (choice < 0) {
                 Console.Write("--------Main--------" +
@@ -48,7 +75,7 @@ namespace Lab6
                               "\n2. Magazines" +
                               "\n3. Tickets" +
                               "\n4. Checkout" +
-                              "\n5. Exit \n");
+                              "\n5. Exit \n");                
                 choice = Convert.ToInt32(Console.ReadLine());
                 
                 switch (choice)
@@ -154,8 +181,8 @@ namespace Lab6
             static int Add(int choice, string Pub){
 
                 Book bookz = new Book();
+                DateTime magDate = new DateTime();
                 
-
                 if (Pub == "Book")
                 {
                     Console.WriteLine("Title: ");
@@ -200,11 +227,60 @@ namespace Lab6
                 Console.WriteLine("Here are the " + Pub + "'s currently in the system:");
                 if (Pub == "Book")
                 {
-                    if (Books[counter] == null)
+                    if (Books.Count == 0)
                     {
                         Console.WriteLine("There are currently no Books in the System.");
                         return choice = -1;
                     }
+                    for (counter = 0; counter < Books.Count; counter++)
+                    {
+                        Console.WriteLine("\n" + ((counter + 1) + ". ") + Books[counter].Title);
+                    }
+                    Console.WriteLine("\n Choose which book you would like to edit: ");
+                    counter = Convert.ToInt32(Console.ReadLine());
+                    while (change > -1){
+                    Console.WriteLine("\n Choose which section you would like to edit:"
+                                  + "\n1. Edit the Title"
+                                  + "\n2. Edit the Order Quantity"
+                                  + "\n3. Edit the Price"
+                                  + "\n4. Edit the Author "
+                                  + "\n5. Return to Menu\n");
+                    change = Convert.ToInt32(Console.ReadLine());
+                    
+                    
+                        switch (change)
+                        {
+                            case 1:
+                                Console.WriteLine("\n Edit the Title: ");
+                                Books[counter - 1].Title = Console.ReadLine();
+                                break;
+                            case 2:
+                                Console.WriteLine("\nEdit the Order Quantity: ");
+                                Books[counter - 1].Copies = Convert.ToInt32(Console.ReadLine());
+                                break;
+                            case 3:
+                                Console.WriteLine("\nEdit the Price: ");
+                                Books[counter - 1].Price = Convert.ToInt32(Console.ReadLine());
+                                break;
+                            case 4:
+                                Console.WriteLine("\nEdit the Author: ");
+                                Books[counter - 1].Author = Console.ReadLine();
+                                break;
+                            case 5:
+                                change = -1;
+                                break;
+                        }
+                    }
+
+                }
+                else if (Pub == "Magazine")
+                {
+                    if (Mags[counter] == null)
+                    {
+                        Console.WriteLine("There are currently no Magazines in the System.");
+                        return choice = -1;
+                    }
+
                     for (counter = 0; counter < Books.Count; counter++)
                     {
                         Console.WriteLine("\n" + ((counter + 1) + ". ") + Books[counter].Title);
@@ -223,23 +299,22 @@ namespace Lab6
                     {
                         case 1:
                             Console.WriteLine("\n Edit the Title: ");
-                            Books[counter - 1].Title = Console.ReadLine();
+                            Mags[counter - 1].Title = Console.ReadLine();
                             break;
                         case 2:
                             Console.WriteLine("\nEdit the Order Quantity: ");
-                            Books[counter - 1].Copies = Convert.ToInt32(Console.ReadLine());
+                            Mags[counter - 1].OrderQty = Convert.ToInt32(Console.ReadLine());
                             break;
                         case 3:
                             Console.WriteLine("\nEdit the Price: ");
-                            Books[counter - 1].Price = Convert.ToInt32(Console.ReadLine());
+                            Mags[counter - 1].Price = Convert.ToInt32(Console.ReadLine());
                             break;
                         case 4:
-                            Console.WriteLine("\nEdit the Author: ");
-                            Books[counter - 1].Author = Console.ReadLine();
+                            Console.WriteLine("\nEdit the Current Issue: ");
+                            Mags[counter - 1].CurrIssue = Console.ReadLine();
                             break;
                         case 5: break;
                     }
-                    
                 }
                 
                 return choice = -1;
@@ -269,12 +344,42 @@ namespace Lab6
                     Books.RemoveAt(counter - 1);
 
                 }
+                else if (Pub == "Magazine")
+                {
+                    if (Mags[counter] == null)
+                    {
+                        Console.WriteLine("There are currently no Magazines in the System.");
+                        return choice = -1;
+                    }
+                    for (counter = 0; counter < Mags.Count; counter++)
+                    {
+                        Console.WriteLine("\n" + ((counter + 1) + ". ") + Mags[counter].Title);
+                    }
+                    Console.WriteLine("\n Choose which book you would like to remove from inventory: ");
+                    counter = Convert.ToInt32(Console.ReadLine());
+
+                    Mags.RemoveAt(counter - 1);
+                }
                 return choice = -1;
             }
 
             static int Sell(int choice, string Pub)
             {
+                int counter;
+           
+             if(Pub == "Book"){
+                     Console.WriteLine("\nHere is a list of the books: \n");
+                
+                     for( counter = 0; counter < Books.Count; counter++){
+                     Console.WriteLine("\n" + ((counter + 1) + ". ") + Books[counter].Title);                    
+                     }      
+                     Console.WriteLine("\n ----------------");
 
+                     Console.WriteLine("\nEnter the book number to sell: ");
+                     counter = Convert.ToInt32(Console.ReadLine());
+                     sellItem(Book[counter - 1], Pub);
+                           
+             }
                 return choice = -1;
             }
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lab6
 {
-    public class Publication
+    public abstract class Publication : SaleableItem
     {
         private String title;
         private Double price;
@@ -44,16 +44,16 @@ namespace Lab6
 
         public Publication()
         {
-            this.copies = 0;
-            this.price = 0.0d;
-            this.title = "No title";
+            this.copies = Copies;
+            this.price = Price;
+            this.title = Title;
         }
 
         override public String ToString()
         {
-            return "Title: " + title +
-                "\nPrice: " + "$" + price +
-                "\nCopies: " + copies;
+            return "Title: " + Title +
+                "\nPrice: " + "$" + Price +
+                "\nCopies: " + Copies;
         }
 
         public void sellCopy()
