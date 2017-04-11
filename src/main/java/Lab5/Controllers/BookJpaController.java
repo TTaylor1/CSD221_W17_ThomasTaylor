@@ -6,7 +6,6 @@
 package Lab5.Controllers;
 
 import Lab5.Controllers.exceptions.NonexistentEntityException;
-import Lab5.Controllers.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -32,18 +31,13 @@ public class BookJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Book book) throws PreexistingEntityException, Exception {
+    public void create(Book book) throws Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             em.persist(book);
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findBook(book.getId()) != null) {
-                throw new PreexistingEntityException("Book " + book + " already exists.", ex);
-            }
-            throw ex;
+            em.getTransaction().commit();        
         } finally {
             if (em != null) {
                 em.close();

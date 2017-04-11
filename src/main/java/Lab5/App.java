@@ -33,11 +33,12 @@ public class App {
     Ticket tick = new Ticket();
     Format formatter = new SimpleDateFormat("MM-yyyy");  
     EntityManagerFactory emf=null;
-    EntityManager em=null;
-    List<Book> ListOfBooks = new ArrayList<>();
+    EntityManager em=null;    
+    
     List<Magazine> ListOfMagazines = new ArrayList<>();
     BookJpaController bookController = new BookJpaController(emf);
     MagazineJpaController magController = new MagazineJpaController(emf);
+    
     public void run(){  
         
         
@@ -48,7 +49,7 @@ public class App {
             Logger.getLogger(Main.class.getName()).log(Level.INFO, "Entity Manager created ("+emf+")");
             
             Scanner input=new Scanner(System.in);
-            em.getTransaction().begin();
+            
             
             Date magDate = (Date) formatter.parseObject("08-2017");
             java.sql.Date magDate1 = new java.sql.Date(magDate.getTime());
@@ -57,14 +58,14 @@ public class App {
         book1.setTitle("Hunger");
         book1.setCopies(10);
         book1.setPrice(10.99);
-        em.persist(book1);
+        bookController.create(book1);
         
         Book book2 = new Book();
         book2.setAuthor("Timmy");
         book2.setTitle("Thirst");
         book2.setCopies(15);
         book2.setPrice(15.99);
-        em.persist(book2);
+        bookController.create(book2);
         
         Magazine mag1 = new Magazine();
         mag1.setTitle("Drummer");
@@ -229,20 +230,20 @@ public int AddABook(int Choice, String Pub)throws ParseException, Exception{
         System.out.print("Add a " + Pub);
             
         if (Pub.equals("Book")){
-                    
+                    Book book1 = new Book();
                     System.out.print("\nTitle: ");
                     title = input.next();
-                    book.setTitle(title);
+                    book1.setTitle(title);
                     System.out.print("\nQuantity to Order: ");
                     quantity = input.nextInt();
-                    book.setCopies(quantity);
+                    book1.setCopies(quantity);
                     System.out.print("\nPrice: ");
                     price = input.nextFloat();
-                    book.setPrice(price);
+                    book1.setPrice(price);
                     System.out.print("\nAuthor: ");
                     author = input.next();
-                    book.setAuthor(author);
-                    bookController.create(book);
+                    book1.setAuthor(author);
+                    bookController.create(book1);
                     
         } else if (Pub.equals("Magazine")){    
                 
@@ -279,6 +280,7 @@ public int AddABook(int Choice, String Pub)throws ParseException, Exception{
 public int EditABook(int Choice, String Pub) throws ParseException{
         int counter = 1;
         int change = 0;
+        List<Book> ListOfBooks = em.createQuery("Select c FROM Book c").getResultList();
         Scanner input=new Scanner(System.in);
         System.out.print("Here are the "+ Pub + "'s currently in the system:");
              if(Pub.equals("Book")){
@@ -420,15 +422,16 @@ public int EditABook(int Choice, String Pub) throws ParseException{
 public int DeleteABook(int Choice, String Pub) throws NonexistentEntityException{
         Scanner input2=new Scanner(System.in);
         int counter = 1;
-        long Id;
+        
+        List<Book> ListOfBooks = em.createQuery("Select c FROM Book c").getResultList();
         System.out.print("Here is a list of the " + Pub + "'s: \n");
         
             if (Pub.equals("Book")){
                 Book bookDel = new Book();
                 
                 System.out.println("\nList of Books\n");
-                for(Book book:ListOfBooks){
-                System.out.println("\n"+book.getId()+"."+book.getTitle());
+                for(Book book1:ListOfBooks){
+                System.out.println("\n"+book1.getId()+"."+book1.getTitle());
                 counter += 1;
                 }    
                 
@@ -436,7 +439,7 @@ public int DeleteABook(int Choice, String Pub) throws NonexistentEntityException
                 
                 counter = input2.nextInt();
                 bookDel = ListOfBooks.get(counter - 1); 
-                //Id = bookDel.getId();
+                
                 bookController.destroy(bookDel.getId());
                 
                 

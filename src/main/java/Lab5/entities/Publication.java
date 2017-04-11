@@ -11,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public abstract class Publication implements Serializable, SaleableItem {
+public class Publication implements Serializable, SaleableItem {
 
     @Basic
     private double Price;
