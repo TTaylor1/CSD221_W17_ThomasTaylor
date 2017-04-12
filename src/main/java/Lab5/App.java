@@ -6,8 +6,8 @@
 package Lab5;
 
 
-import Lab5.Controllers.*;
-import Lab5.Controllers.exceptions.NonexistentEntityException;
+import Lab5.Controller.*;
+import java.io.Serializable;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,17 +27,18 @@ import lab5.entities.*;
  *
  * @author 14034305
  */
-public class App {
+public class App implements Serializable{
+    
     Book book = new Book();
     Magazine Mag = new Magazine();
     Ticket tick = new Ticket();
     Format formatter = new SimpleDateFormat("MM-yyyy");  
-    EntityManagerFactory emf=null;
-    EntityManager em=null;    
-    
-    List<Magazine> ListOfMagazines = new ArrayList<>();
+    EntityManagerFactory emf;
+    EntityManager em;    
+    List<Book> ListOfBooks = new ArrayList<>();
+    List<Magazine> ListOfMags = new ArrayList<>();
     BookJpaController bookController = new BookJpaController(emf);
-    MagazineJpaController magController = new MagazineJpaController(emf);
+    //MagazineJpaController magController = new MagazineJpaController(emf);
     
     public void run(){  
         
@@ -46,26 +47,27 @@ public class App {
             
             emf=Persistence.createEntityManagerFactory("Lab5_Thomas_taylor");
             em=emf.createEntityManager();
-            Logger.getLogger(Main.class.getName()).log(Level.INFO, "Entity Manager created ("+emf+")");
-            
-            Scanner input=new Scanner(System.in);
-            
-            
+            Logger.getLogger(Main.class.getName()).log(Level.INFO, "Entity Manager created ("+emf+")");            
+            Scanner input=new Scanner(System.in);         
+            em.getTransaction().begin();
             Date magDate = (Date) formatter.parseObject("08-2017");
             java.sql.Date magDate1 = new java.sql.Date(magDate.getTime());
+            
+            
         Book book1 = new Book();
         book1.setAuthor("Tom");
         book1.setTitle("Hunger");
         book1.setCopies(10);
         book1.setPrice(10.99);
-        bookController.create(book1);
+        em.persist(book1);
+        
         
         Book book2 = new Book();
         book2.setAuthor("Timmy");
         book2.setTitle("Thirst");
         book2.setCopies(15);
         book2.setPrice(15.99);
-        bookController.create(book2);
+        //em.persist(book2);
         
         Magazine mag1 = new Magazine();
         mag1.setTitle("Drummer");
@@ -73,10 +75,10 @@ public class App {
         mag1.setCopies(20);
         mag1.setCurrentIssue(magDate1);
         mag1.setQuantity(10);
-        em.persist(mag1);
-        
+        //em.persist(mag1);
         
         em.getTransaction().commit();
+        
           
             
             int Choice = -1;
@@ -209,12 +211,7 @@ public class App {
         }
   
     
-  /**
-     *
-     * @param Choice
-     * @param Pub
-     * @return
-     */
+ 
     }
 public int AddABook(int Choice, String Pub)throws ParseException, Exception{
         Scanner input=new Scanner(System.in);
@@ -230,20 +227,20 @@ public int AddABook(int Choice, String Pub)throws ParseException, Exception{
         System.out.print("Add a " + Pub);
             
         if (Pub.equals("Book")){
-                    Book book1 = new Book();
+                   
                     System.out.print("\nTitle: ");
                     title = input.next();
-                    book1.setTitle(title);
+                    book.setTitle(title);
                     System.out.print("\nQuantity to Order: ");
                     quantity = input.nextInt();
-                    book1.setCopies(quantity);
+                    book.setCopies(quantity);
                     System.out.print("\nPrice: ");
                     price = input.nextFloat();
-                    book1.setPrice(price);
+                    book.setPrice(price);
                     System.out.print("\nAuthor: ");
                     author = input.next();
-                    book1.setAuthor(author);
-                    bookController.create(book1);
+                    book.setAuthor(author);
+                    bookController.create(book);
                     
         } else if (Pub.equals("Magazine")){    
                 
@@ -261,7 +258,7 @@ public int AddABook(int Choice, String Pub)throws ParseException, Exception{
                     magDate = (Date) formatter.parseObject(currentIssue);
                     java.sql.Date magDate1 = new java.sql.Date(magDate.getTime());
                     Mag.setCurrentIssue(magDate1);                    
-                    magController.create(Mag);
+                    //magController.create(Mag);
                     
                     
         } /*else if (Pub.equals("Ticket")){
@@ -280,12 +277,12 @@ public int AddABook(int Choice, String Pub)throws ParseException, Exception{
 public int EditABook(int Choice, String Pub) throws ParseException{
         int counter = 1;
         int change = 0;
-        List<Book> ListOfBooks = em.createQuery("Select c FROM Book c").getResultList();
+        
         Scanner input=new Scanner(System.in);
         System.out.print("Here are the "+ Pub + "'s currently in the system:");
              if(Pub.equals("Book")){
                 Book bookEdit = new Book();     
-                ListOfBooks = bookController.findBookEntities();
+                //ListOfBooks = bookController.findBookEntities();
                 if(ListOfBooks == null)
                 {
                     System.out.print("\nThere are no books to edit.");
@@ -338,14 +335,14 @@ public int EditABook(int Choice, String Pub) throws ParseException{
              } else if(Pub.equals("Magazine")){
       
                 
-                if(ListOfMagazines == null)
+                if(ListOfMags == null)
                 {
                     System.out.print("\nThere are no magazines to edit.");
                      return Choice = -1;
                 }
                 // a loop to print out all the magazines in the store
                 System.out.println("\nList of Magazines");
-                for(Magazine mag:ListOfMagazines){
+                for(Magazine mag:ListOfMags){
                 System.out.println("\n"+mag.getId()+"."+mag.getTitle());
                 counter += 1;
                 }
@@ -419,11 +416,11 @@ public int EditABook(int Choice, String Pub) throws ParseException{
        return Choice = -1;
     }
 
-public int DeleteABook(int Choice, String Pub) throws NonexistentEntityException{
+public int DeleteABook(int Choice, String Pub){
         Scanner input2=new Scanner(System.in);
         int counter = 1;
         
-        List<Book> ListOfBooks = em.createQuery("Select c FROM Book c").getResultList();
+        
         System.out.print("Here is a list of the " + Pub + "'s: \n");
         
             if (Pub.equals("Book")){
@@ -440,20 +437,20 @@ public int DeleteABook(int Choice, String Pub) throws NonexistentEntityException
                 counter = input2.nextInt();
                 bookDel = ListOfBooks.get(counter - 1); 
                 
-                bookController.destroy(bookDel.getId());
+                //bookController.destroy(bookDel.getId());
                 
                 
             } else if (Pub.equals("Magazine")){
                 Magazine magDel = new Magazine();
                 
                 System.out.println("\nList of Books\n");
-                for(Magazine book:ListOfMagazines){
+                for(Magazine book:ListOfMags){
                 System.out.println("\n"+counter+"."+book.getTitle());
                 counter += 1;
                 }      
                 System.out.print("\nChoose the Magazine you would like to remove from inventory:");
                 counter = input2.nextInt();
-                magDel = ListOfMagazines.get(counter - 1);
+                magDel = ListOfMags.get(counter - 1);
                 
             } /*else if (Pub.equals("Ticket")){
                 for( counter = 0; counter < tick.size(); counter++){

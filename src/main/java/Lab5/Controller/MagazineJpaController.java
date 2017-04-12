@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Lab5.Controllers;
+package Lab5.Controller;
 
-import Lab5.Controllers.exceptions.NonexistentEntityException;
-import Lab5.Controllers.exceptions.PreexistingEntityException;
+import Lab5.Controller.exceptions.NonexistentEntityException;
+import Lab5.Controller.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;

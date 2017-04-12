@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Lab5.Controllers;
+package Lab5.Controller;
 
-import Lab5.Controllers.exceptions.NonexistentEntityException;
+import Lab5.Controller.exceptions.NonexistentEntityException;
+import Lab5.Controller.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -31,13 +32,18 @@ public class BookJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Book book) throws Exception {
+    public void create(Book book) throws PreexistingEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
             em.persist(book);
-            em.getTransaction().commit();        
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            if (findBook(book.getId()) != null) {
+                throw new PreexistingEntityException("Book " + book + " already exists.", ex);
+            }
+            throw ex;
         } finally {
             if (em != null) {
                 em.close();

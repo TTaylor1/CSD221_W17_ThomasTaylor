@@ -1,4 +1,4 @@
-package Lab5.Controllers.exceptions;
+package Lab5.Controller.exceptions;
 
 public class NonexistentEntityException extends Exception {
     public NonexistentEntityException(String message, Throwable cause) {

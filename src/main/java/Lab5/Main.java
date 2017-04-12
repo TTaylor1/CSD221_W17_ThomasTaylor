@@ -5,16 +5,17 @@
  */
 package Lab5;
 
-
-
 /**
  *
  * @author 14034305
  */
 public class Main {
             
-  public static void main(String[] args) {
+    /**
+     *
+     * @param args
+     */
+    public static void main(String[] args){
       new App().run();
   }
 }
-

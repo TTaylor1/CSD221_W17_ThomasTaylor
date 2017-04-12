@@ -11,7 +11,7 @@
             <basic attribute-type="String" visibile="true" name="Author" id="_149010184835413"/>
         </jpa:attributes>
     </jpa:entity>
-    <jpa:entity xre="false" sm="false" abs="false" class="discMag" superclassId="_1490101838966" visibile="true" minimized="false" rootElement="_14901015671501" id="_1490800269524">
+    <jpa:entity xre="false" sm="false" abs="false" class="discMag" superclassId="_1490101774918" visibile="true" minimized="false" rootElement="_14901015671501" id="_1490800269524">
         <jpa:attributes/>
     </jpa:entity>
     <jpa:entity xre="false" sm="false" abs="false" class="Publication" visibile="true" minimized="false" rootElement="_14901015671501" id="_1490803012819">
@@ -19,7 +19,9 @@
             <basic attribute-type="String" visibile="true" name="Title" id="_149080301951933"/>
             <basic attribute-type="double" visibile="true" name="Price" id="_149080301973534"/>
             <basic attribute-type="int" visibile="true" name="Copies" id="_149080301992735"/>
-            <jpa:id attribute-type="Long" visibile="true" name="id" id="_149080301282031"/>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_149080301282031">
+                <jpa:generated-value/>
+            </jpa:id>
         </jpa:attributes>
     </jpa:entity>
     <jpa:entity xre="false" sm="false" abs="false" class="Ticket" visibile="true" minimized="false" rootElement="_14901015671501" id="_1490804441027">
@@ -27,7 +29,10 @@
             <basic attribute-type="String" visibile="true" name="Description" id="_149080444950357"/>
             <basic attribute-type="double" visibile="true" name="Price" id="_149080444985558"/>
             <basic attribute-type="String" visibile="true" name="Client" id="_149080445039159"/>
-            <jpa:id attribute-type="Long" visibile="true" name="id" id="_149080444102755"/>
+            <jpa:id attribute-type="Long" visibile="true" name="id" id="_149080444102755">
+                <jpa:column unique="false" nullable="false" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
+                <jpa:generated-value/>
+            </jpa:id>
         </jpa:attributes>
     </jpa:entity>
     <jpa:diagram>
@@ -39,7 +44,7 @@
                 <Bounds x="76.0" y="377.0" width="128.0" height="58.0"/>
             </shape>
             <shape elementRef="_1490800269524">
-                <Bounds x="76.0" y="526.0" width="144.0" height="24.0"/>
+                <Bounds x="317.0" y="564.0" width="144.0" height="24.0"/>
             </shape>
             <shape elementRef="_1490803012819">
                 <Bounds x="196.0" y="110.0" width="159.0" height="134.0"/>

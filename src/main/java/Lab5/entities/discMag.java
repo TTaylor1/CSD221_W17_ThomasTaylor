@@ -7,7 +7,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 
 @Entity
-public class discMag extends Book implements Serializable {
+public class discMag extends Magazine implements Serializable {
 
     public discMag() {
 

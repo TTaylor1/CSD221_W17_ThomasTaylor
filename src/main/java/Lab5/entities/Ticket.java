@@ -5,11 +5,12 @@ package lab5.entities;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Ticket implements Serializable, SaleableItem {
+public class Ticket implements Serializable {
 
     @Basic
     private String Description;
@@ -17,6 +18,7 @@ public class Ticket implements Serializable, SaleableItem {
     @Basic
     private double Price;
 
+    @Column(nullable = false)
     @Id
     private Long id;
 
