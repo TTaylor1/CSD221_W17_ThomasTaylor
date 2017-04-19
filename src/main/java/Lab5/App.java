@@ -6,7 +6,11 @@
 package Lab5;
 
 
-import Lab5.Controller.*;
+import Lab5.Controller.BookJpaController;
+import Lab5.Controller.MagazineJpaController;
+import Lab5.Controller.TicketJpaController;
+import Lab5.Controller.exceptions.NonexistentEntityException;
+import Lab5.entities.SaleableItem;
 import java.io.Serializable;
 import java.text.Format;
 import java.text.ParseException;
@@ -37,8 +41,8 @@ public class App implements Serializable{
     EntityManager em;    
     List<Book> ListOfBooks = new ArrayList<>();
     List<Magazine> ListOfMags = new ArrayList<>();
-    BookJpaController bookController = new BookJpaController(emf);
-    //MagazineJpaController magController = new MagazineJpaController(emf);
+    List<Ticket> ListOfTicks = new ArrayList<>();
+    
     
     public void run(){  
         
@@ -48,11 +52,10 @@ public class App implements Serializable{
             emf=Persistence.createEntityManagerFactory("Lab5_Thomas_taylor");
             em=emf.createEntityManager();
             Logger.getLogger(Main.class.getName()).log(Level.INFO, "Entity Manager created ("+emf+")");            
-            Scanner input=new Scanner(System.in);         
-            em.getTransaction().begin();
+            Scanner input=new Scanner(System.in);  
             Date magDate = (Date) formatter.parseObject("08-2017");
             java.sql.Date magDate1 = new java.sql.Date(magDate.getTime());
-            
+            em.getTransaction().begin();
             
         Book book1 = new Book();
         book1.setAuthor("Tom");
@@ -67,7 +70,7 @@ public class App implements Serializable{
         book2.setTitle("Thirst");
         book2.setCopies(15);
         book2.setPrice(15.99);
-        //em.persist(book2);
+        em.persist(book2);
         
         Magazine mag1 = new Magazine();
         mag1.setTitle("Drummer");
@@ -75,7 +78,7 @@ public class App implements Serializable{
         mag1.setCopies(20);
         mag1.setCurrentIssue(magDate1);
         mag1.setQuantity(10);
-        //em.persist(mag1);
+        em.persist(mag1);
         
         em.getTransaction().commit();
         
@@ -85,6 +88,7 @@ public class App implements Serializable{
             int Choice1 = -1;
             int Choice2 = -1;
             String Pub;
+                     
             while (Choice < 0){
             
             System.out.print("---------Main---------"+
@@ -120,7 +124,7 @@ public class App implements Serializable{
                         Choice = DeleteABook(Choice1, Pub);
                         break;
                     case 4:
-                        //Choice = SellBook(Choice1, Pub);
+                        Choice = SellBook(Choice1, Pub);
                         break;
                     case 5:
                        Choice = -1;
@@ -149,7 +153,7 @@ public class App implements Serializable{
                         Choice = DeleteABook(Choice1, Pub);
                         break;
                     case 4:
-                        //Choice = SellBook(Choice1, Pub);
+                        Choice = SellBook(Choice1, Pub);
                         break;
                     case 5: break;
                     }}while (Choice != -1);
@@ -185,8 +189,7 @@ public class App implements Serializable{
                     System.out.print("Currently Out Of Order. Try again later!");
                     break;
                 case 5:
-                    //Sales.showTotal();
-                    em.getTransaction().commit();
+                    //Sales.showTotal();                    
                     break;
                     
                 }  
@@ -215,6 +218,9 @@ public class App implements Serializable{
     }
 public int AddABook(int Choice, String Pub)throws ParseException, Exception{
         Scanner input=new Scanner(System.in);
+        BookJpaController bookController=new BookJpaController(emf);
+        MagazineJpaController magController = new MagazineJpaController(emf);
+        TicketJpaController tickController = new TicketJpaController(emf);
         String author;
         int quantity;
         String currentIssue;
@@ -227,62 +233,70 @@ public int AddABook(int Choice, String Pub)throws ParseException, Exception{
         System.out.print("Add a " + Pub);
             
         if (Pub.equals("Book")){
-                   
+                   Book book1 = new Book();
                     System.out.print("\nTitle: ");
                     title = input.next();
-                    book.setTitle(title);
+                    book1.setTitle(title);
                     System.out.print("\nQuantity to Order: ");
                     quantity = input.nextInt();
-                    book.setCopies(quantity);
+                    book1.setCopies(quantity);
                     System.out.print("\nPrice: ");
                     price = input.nextFloat();
-                    book.setPrice(price);
+                    book1.setPrice(price);
                     System.out.print("\nAuthor: ");
                     author = input.next();
-                    book.setAuthor(author);
-                    bookController.create(book);
+                    book1.setAuthor(author);
+                    bookController.create(book1);
                     
         } else if (Pub.equals("Magazine")){    
-                
+                Magazine mag1 = new Magazine();
                     System.out.print("\nTitle: ");
                     title = input.next();
-                    Mag.setTitle(title);
+                    mag1.setTitle(title);
                     System.out.print("\nQuantity to Order: ");
                     quantity = input.nextInt();
-                    Mag.setQuantity(quantity);
+                    mag1.setQuantity(quantity);
                     System.out.print("\nPrice per copy: ");
                     price = input.nextFloat();
-                    Mag.setPrice(price);
+                    mag1.setPrice(price);
                     System.out.print("\nDate of current Issue: ");
                     currentIssue = input.next();
                     magDate = (Date) formatter.parseObject(currentIssue);
                     java.sql.Date magDate1 = new java.sql.Date(magDate.getTime());
-                    Mag.setCurrentIssue(magDate1);                    
-                    //magController.create(Mag);
+                    mag1.setCurrentIssue(magDate1);                    
+                    magController.create(mag1);
                     
                     
-        } /*else if (Pub.equals("Ticket")){
-            
-            input.nextLine();
-            System.out.print("\nTicket Type: ");
+        } else if (Pub.equals("Ticket")){
+            Ticket tickz = new Ticket();
+            System.out.print("\nTicket Description: ");
             title = input.nextLine();
-            tickz.setDescription(title);
+            tickz.setDescription(title);            
             System.out.print("\nTicket Price: ");
+            price = input.nextDouble();    
+            tickz.setPrice(price);
+            System.out.print("\nTicket Client: ");
             client = input.next();
             tickz.setClient(client);
-        }*/
+            tickController.create(tickz);
+        }
         
         return Choice = -1;   
     }
-public int EditABook(int Choice, String Pub) throws ParseException{
+public int EditABook(int Choice, String Pub) throws ParseException, Exception{
         int counter = 1;
         int change = 0;
-        
+        BookJpaController bookController=new BookJpaController(emf);
+        MagazineJpaController magController = new MagazineJpaController(emf);
+        TicketJpaController tickController = new TicketJpaController(emf);
+        ListOfBooks=bookController.findBookEntities();
+        ListOfMags = magController.findMagazineEntities();
+        ListOfTicks = tickController.findTicketEntities();
         Scanner input=new Scanner(System.in);
         System.out.print("Here are the "+ Pub + "'s currently in the system:");
              if(Pub.equals("Book")){
-                Book bookEdit = new Book();     
-                //ListOfBooks = bookController.findBookEntities();
+                Book bookEdit = new Book();                
+                
                 if(ListOfBooks == null)
                 {
                     System.out.print("\nThere are no books to edit.");
@@ -291,10 +305,10 @@ public int EditABook(int Choice, String Pub) throws ParseException{
                 // a loop to print out all the books in the store
             
                 System.out.println("\nList of Books\n");
-                for(Book book:ListOfBooks){
-                System.out.println("\n"+book.getId()+"."+book.getTitle());
+                for(Book book1:ListOfBooks){
+                System.out.println("\n"+counter+"."+book1.getTitle());
                 counter += 1;
-            }
+                }
         
                 System.out.print("\n Choose which book you would like to edit: ");
                 counter = input.nextInt();
@@ -311,29 +325,29 @@ public int EditABook(int Choice, String Pub) throws ParseException{
                     System.out.print("\n Edit the Title: ");
                     input = new Scanner(System.in);
                     bookEdit.setTitle(input.nextLine());
-                    
+                    bookController.edit(bookEdit);
                     break;
                 case 2:
                     System.out.print("\nEdit the Order Quantity: ");
                     bookEdit.setCopies(input.nextInt());
-                   
+                    bookController.edit(bookEdit);
                     break;
                 case 3:
                     System.out.print("\nEdit the Price: ");
                     bookEdit.setPrice(input.nextInt());
-                    
+                    bookController.edit(bookEdit);
                     break;
                 case 4:
                     System.out.print("\nEdit the Author: ");
                     bookEdit.setAuthor(input.next());
-                    
+                    bookController.edit(bookEdit);
                     break;
                 case 5:
                     
                     break;
                 }   
              } else if(Pub.equals("Magazine")){
-      
+                Magazine magEdit = new Magazine();
                 
                 if(ListOfMags == null)
                 {
@@ -343,12 +357,12 @@ public int EditABook(int Choice, String Pub) throws ParseException{
                 // a loop to print out all the magazines in the store
                 System.out.println("\nList of Magazines");
                 for(Magazine mag:ListOfMags){
-                System.out.println("\n"+mag.getId()+"."+mag.getTitle());
+                System.out.println("\n"+counter+"."+mag.getTitle());
                 counter += 1;
                 }
                 System.out.print("\n Choose which Magazine you would like to edit: ");
                 counter = input.nextInt();
-        
+                magEdit = ListOfMags.get(counter - 1);
                 System.out.print("\n Choose which section you would like to edit:" 
                               +"\n1. Edit the Title"
                               +"\n2. Edit the Order Quantity"
@@ -357,68 +371,89 @@ public int EditABook(int Choice, String Pub) throws ParseException{
                               +"\n5. Return to Menu\n");
                 change = input.nextInt();
                 switch(change){
-                /*case 1: 
+                case 1: 
                     System.out.print("\n Edit the Title: ");
-                    mags.get(counter - 1).setTitle(input.next());
+                    magEdit.setTitle(input.next());
+                    magController.edit(magEdit);
                     break;
                 case 2:
                     System.out.print("\nEdit the Order Quantity: ");
-                    Magazine.get(counter - 1).setCopies(input.nextInt());
+                    magEdit.setCopies(input.nextInt());
+                    magController.edit(magEdit);
                     break;
                 case 3:
                     System.out.print("\nEdit the Price: ");
-                    Magazine.get(counter - 1).setPrice(input.nextInt());
+                    magEdit.setPrice(input.nextInt());
+                    magController.edit(magEdit);
                     break;
                 case 4:
                     System.out.print("\nEdit the Current Issue: ");
                     String currentIssue = input.next();
                     Date magDate = (Date) formatter.parseObject(currentIssue);
-                    Magazine.get(counter - 1).setCurrIssue(magDate);
-                    break;*/
+                    java.sql.Date magDate1 = new java.sql.Date(magDate.getTime());
+                    magEdit.setCurrentIssue(magDate1);
+                    magController.edit(magEdit);
+                    break;
                 case 5:
                     
                     break;
                 }
-            } /*else if (Pub.equals("Ticket")){
-                if(Ticket.get(counter) == null)
+            } else if (Pub.equals("Ticket")){
+                Ticket tickEdit = new Ticket();
+                if(ListOfTicks == null)
                 {
                     System.out.print("\nThere are no tickets to edit.");
                      return Choice = -1;
                 }
                 // a loop to print out all the tickets in the store
-                for( counter = 0; counter < Ticket.size(); counter++){
-                    System.out.print("\n" + ((counter + 1) + ". ") + Ticket.get(counter).getDescription());                    
+                System.out.print("\nList of Tickets");
+                for(Ticket tick1: ListOfTicks){
+                    System.out.print("\n" + counter + ". " + tick1.getDescription());                    
                 }    
         
                 System.out.print("\n Choose which Ticket you would like to edit: ");
                 counter = input.nextInt();
-        
+                tickEdit = ListOfTicks.get(counter - 1);
                 System.out.print("\n Choose which section you would like to edit:" 
-                              +"\n1. Edit the Ticket Name"
+                              +"\n1. Edit the Ticket Description"
                               +"\n2. Edit the Price"
-                              +"\n3. Return to Menu\n");
+                              +"\n3. Edit the Client"
+                              +"\n4. Return to Menu\n");
                 change = input.nextInt();
                 switch(change){
                 case 1: 
                     System.out.print("\n Edit the Ticket Name: ");
-                    Ticket.get(counter - 1).setDescription(input.next());
+                    tickEdit.setDescription(input.next());
+                    tickController.edit(tickEdit);
                     break;
                 case 2:
                     System.out.print("\nEdit the Ticket Price: ");
-                    Ticket.get(counter - 1).setClient(input.next());
+                    tickEdit.setPrice(input.nextDouble());
+                    tickController.edit(tickEdit);
                     break;
                 case 3:
+                    System.out.print("\nEdit the Ticket Client: ");
+                    tickEdit.setClient(input.next());
+                    tickController.edit(tickEdit);
+                    break;
+                case 4:
                     break;
                 
                 }
-            }   */
+            }   
              
        return Choice = -1;
     }
 
-public int DeleteABook(int Choice, String Pub){
+public int DeleteABook(int Choice, String Pub) throws NonexistentEntityException{
         Scanner input2=new Scanner(System.in);
         int counter = 1;
+        BookJpaController bookController=new BookJpaController(emf);
+        MagazineJpaController magController = new MagazineJpaController(emf);
+        TicketJpaController tickController = new TicketJpaController(emf);
+        ListOfBooks=bookController.findBookEntities();
+        ListOfMags = magController.findMagazineEntities();
+        ListOfTicks = tickController.findTicketEntities();
         
         
         System.out.print("Here is a list of the " + Pub + "'s: \n");
@@ -428,7 +463,7 @@ public int DeleteABook(int Choice, String Pub){
                 
                 System.out.println("\nList of Books\n");
                 for(Book book1:ListOfBooks){
-                System.out.println("\n"+book1.getId()+"."+book1.getTitle());
+                System.out.println("\n"+counter+"."+book1.getTitle());
                 counter += 1;
                 }    
                 
@@ -437,34 +472,93 @@ public int DeleteABook(int Choice, String Pub){
                 counter = input2.nextInt();
                 bookDel = ListOfBooks.get(counter - 1); 
                 
-                //bookController.destroy(bookDel.getId());
+                bookController.destroy(bookDel.getId());
                 
                 
             } else if (Pub.equals("Magazine")){
                 Magazine magDel = new Magazine();
                 
                 System.out.println("\nList of Books\n");
-                for(Magazine book:ListOfMags){
-                System.out.println("\n"+counter+"."+book.getTitle());
+                for(Magazine mag:ListOfMags){
+                System.out.println("\n"+counter+"."+mag.getTitle());
                 counter += 1;
                 }      
                 System.out.print("\nChoose the Magazine you would like to remove from inventory:");
                 counter = input2.nextInt();
                 magDel = ListOfMags.get(counter - 1);
                 
-            } /*else if (Pub.equals("Ticket")){
-                for( counter = 0; counter < tick.size(); counter++){
-                    System.out.print("\n" + ((counter + 1) + ". ") + tick.get(counter).getDescription());                    
+                magController.destroy(magDel.getId());
+                
+            } else if (Pub.equals("Ticket")){
+                Ticket tickDel = new Ticket();
+                
+                for(Ticket tick1:ListOfTicks){
+                    System.out.print("\n" + counter + ". " + tick.getDescription());                    
                 }    
                 System.out.print("\nChoose the Ticket you would like to remove from inventory:");
                 counter = input2.nextInt();
-                tick.remove(tick.get(counter - 1));
-            }        */ 
+                tickDel = ListOfTicks.get(counter - 1);
+                
+                tickController.destroy(tickDel.getId());
+            }        
         return Choice = -1;
     }
-}
+
    
   
-
+public int SellBook(int Choice, String Pub) throws ParseException{
+         Scanner input=new Scanner(System.in);
+         int counter = 1;
+         BookJpaController bookController=new BookJpaController(emf);
+         MagazineJpaController magController = new MagazineJpaController(emf);
+         TicketJpaController tickController = new TicketJpaController(emf);
+         ListOfBooks=bookController.findBookEntities();
+         ListOfMags = magController.findMagazineEntities();
+         ListOfTicks = tickController.findTicketEntities();
+         CashTill Sales = new CashTill();
+         
+             if(Pub.equals("Book")){
+                     Book bookSell = new Book();
+                     System.out.print("\nHere is a list of the books: \n");
+                
+                     for(Book book1: ListOfBooks){
+                     System.out.print("\n" + counter  + ". " + book1.getTitle()); 
+                     counter += 1;
+                     }      
+                     System.out.print("\n ----------------");
+                
+                     System.out.print("\nEnter the book number to sell: ");
+                     counter = input.nextInt() - 1;
+                     //bookSell = ListOfBooks.get(counter - 1);
+                     //Sales.sellItem(ListOfBooks.get(counter), Pub);
+                           
+             } /*else if(Pub.equals("Magazine")){        
+                 
+                     System.out.print("Here is a list of the magazines: \n");
+                
+                     for( counter = 0; counter < mags.size(); counter++){
+                     System.out.print("\n" + ((counter + 1) + ". ") + mags.get(counter).getTitle());                    
+                    }      
+                     System.out.print("\n ----------------");
+                     
+                     System.out.print("\nEnter the magazine number to sell: ");
+                     counter = input.nextInt();
+                     Sales.sellItem(mags.get(counter - 1), Pub);
+                           
+             } else if (Pub.equals("Ticket")){
+                    System.out.print("Here is a list of the Tickets: \n");
+                
+                     for( counter = 0; counter < tick.size(); counter++){
+                     System.out.print("\n" + ((counter + 1) + ". ") + tick.get(counter).getDescription());                    
+                    }      
+                     System.out.print("\n ----------------");
+                     
+                     System.out.print("\nEnter the ticket number to sell: ");
+                     counter = input.nextInt();
+                     Sales.sellItem(tick.get(counter - 1), Pub);
+            }*/
+        return Choice = -1;
+    }        
+}
     
 

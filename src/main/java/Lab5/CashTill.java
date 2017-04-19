@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Lab4;
+package Lab5;
+
+import Lab5.entities.SaleableItem;
 
 /**
  *
@@ -20,7 +22,7 @@ public class CashTill{
     public void sellItem(SaleableItem pPub, String Pub)
     {
         runningTotal = runningTotal + pPub.getPrice();
-        /*if (Pub.equals("Book") || Pub.equals("Magazine")){
+        /*if (Pub.equals("Book") || Pub.equals("Magazine") || Pub.equals("Ticket")){
         pPub.sellCopy();
         }*/
         System.out.println("Sold " + pPub +  " @ " + pPub.getPrice() + "\nsubTotal = " + runningTotal);

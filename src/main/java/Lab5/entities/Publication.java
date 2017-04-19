@@ -5,13 +5,18 @@ package lab5.entities;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Publication implements Serializable {
+public abstract class Publication implements SaleableItem, Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
     @Basic
     private double Price;
 
@@ -21,14 +26,21 @@ public class Publication implements Serializable {
     @Basic
     private String Title;
 
-    @Column(nullable = false)
-    @Id
-    private Long id;
+    
+    
 
     public Publication() {
 
     }
+    
+    public Long getId() {
+        return this.id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     public double getPrice() {
         return this.Price;
     }
@@ -53,11 +65,6 @@ public class Publication implements Serializable {
         this.Title = Title;
     }
 
-    public Long getId() {
-        return this.id;
-    }
+     
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 }
