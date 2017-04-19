@@ -6,9 +6,9 @@
 package Lab5;
 
 
-import Lab5.Controller.BookJpaController;
-import Lab5.Controller.MagazineJpaController;
-import Lab5.Controller.TicketJpaController;
+import Lab5.Controllers.BookJpaController;
+import Lab5.Controllers.MagazineJpaController;
+import Lab5.Controllers.TicketJpaController;
 import Lab5.Controller.exceptions.NonexistentEntityException;
 import Lab5.entities.SaleableItem;
 import java.io.Serializable;
@@ -124,7 +124,8 @@ public class App implements Serializable{
                         Choice = DeleteABook(Choice1, Pub);
                         break;
                     case 4:
-                        Choice = SellBook(Choice1, Pub);
+                        //Choice = SellBook(Choice1, Pub);
+                        System.out.print("Sales system currently out of order!");
                         break;
                     case 5:
                        Choice = -1;
@@ -153,12 +154,13 @@ public class App implements Serializable{
                         Choice = DeleteABook(Choice1, Pub);
                         break;
                     case 4:
-                        Choice = SellBook(Choice1, Pub);
+                        //Choice = SellBook(Choice1, Pub);
+                        System.out.print("Sales system currently out of order!");
                         break;
                     case 5: break;
                     }}while (Choice != -1);
                     break;
-                /*case 3:
+                case 3:
                     System.out.println("-------------Tickets------------"  
                                      + "\n1. Add A Ticket"
                                      + "\n2. Edit A Ticket"
@@ -178,13 +180,13 @@ public class App implements Serializable{
                             Choice = DeleteABook(Choice1, Pub);
                             break;
                         case 4:
-                            //System.out.print("Currently out of order!");
-                            Choice = SellBook(Choice1, Pub);
+                            System.out.print("Sales system currently out of order!");
+                            //Choice = SellBook(Choice1, Pub);
                             break;
                         case 5:
                             break;
                     }
-                    break;*/
+                    break;
                 case 4:
                     System.out.print("Currently Out Of Order. Try again later!");
                     break;
@@ -445,7 +447,7 @@ public int EditABook(int Choice, String Pub) throws ParseException, Exception{
        return Choice = -1;
     }
 
-public int DeleteABook(int Choice, String Pub) throws NonexistentEntityException{
+public int DeleteABook(int Choice, String Pub) throws NonexistentEntityException, Lab5.exceptions.NonexistentEntityException{
         Scanner input2=new Scanner(System.in);
         int counter = 1;
         BookJpaController bookController=new BookJpaController(emf);
@@ -506,7 +508,7 @@ public int DeleteABook(int Choice, String Pub) throws NonexistentEntityException
 
    
   
-public int SellBook(int Choice, String Pub) throws ParseException{
+/*public int SellBook(int Choice, String Pub) throws ParseException{
          Scanner input=new Scanner(System.in);
          int counter = 1;
          BookJpaController bookController=new BookJpaController(emf);
@@ -556,9 +558,9 @@ public int SellBook(int Choice, String Pub) throws ParseException{
                      System.out.print("\nEnter the ticket number to sell: ");
                      counter = input.nextInt();
                      Sales.sellItem(tick.get(counter - 1), Pub);
-            }*/
+            }
         return Choice = -1;
-    }        
+    }*/        
 }
     
 

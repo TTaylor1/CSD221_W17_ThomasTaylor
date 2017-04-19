@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Lab5.Controller;
+package Lab5.Controllers;
 
-import Lab5.Controller.exceptions.NonexistentEntityException;
-import Lab5.Controller.exceptions.PreexistingEntityException;
+import Lab5.exceptions.NonexistentEntityException;
+import Lab5.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -15,15 +15,15 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import lab5.entities.Publication;
+import lab5.entities.Ticket;
 
 /**
  *
  * @author 14034305
  */
-public class PublicationJpaController implements Serializable {
+public class TicketJpaController implements Serializable {
 
-    public PublicationJpaController(EntityManagerFactory emf) {
+    public TicketJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -32,16 +32,16 @@ public class PublicationJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Publication publication) throws PreexistingEntityException, Exception {
+    public void create(Ticket ticket) throws PreexistingEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(publication);
+            em.persist(ticket);
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findPublication(publication.getId()) != null) {
-                throw new PreexistingEntityException("Publication " + publication + " already exists.", ex);
+            if (findTicket(ticket.getId()) != null) {
+                throw new PreexistingEntityException("Ticket " + ticket + " already exists.", ex);
             }
             throw ex;
         } finally {
@@ -51,19 +51,19 @@ public class PublicationJpaController implements Serializable {
         }
     }
 
-    public void edit(Publication publication) throws NonexistentEntityException, Exception {
+    public void edit(Ticket ticket) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            publication = em.merge(publication);
+            ticket = em.merge(ticket);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = publication.getId();
-                if (findPublication(id) == null) {
-                    throw new NonexistentEntityException("The publication with id " + id + " no longer exists.");
+                Long id = ticket.getId();
+                if (findTicket(id) == null) {
+                    throw new NonexistentEntityException("The ticket with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -79,14 +79,14 @@ public class PublicationJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Publication publication;
+            Ticket ticket;
             try {
-                publication = em.getReference(Publication.class, id);
-                publication.getId();
+                ticket = em.getReference(Ticket.class, id);
+                ticket.getId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The publication with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The ticket with id " + id + " no longer exists.", enfe);
             }
-            em.remove(publication);
+            em.remove(ticket);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -95,19 +95,19 @@ public class PublicationJpaController implements Serializable {
         }
     }
 
-    public List<Publication> findPublicationEntities() {
-        return findPublicationEntities(true, -1, -1);
+    public List<Ticket> findTicketEntities() {
+        return findTicketEntities(true, -1, -1);
     }
 
-    public List<Publication> findPublicationEntities(int maxResults, int firstResult) {
-        return findPublicationEntities(false, maxResults, firstResult);
+    public List<Ticket> findTicketEntities(int maxResults, int firstResult) {
+        return findTicketEntities(false, maxResults, firstResult);
     }
 
-    private List<Publication> findPublicationEntities(boolean all, int maxResults, int firstResult) {
+    private List<Ticket> findTicketEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Publication.class));
+            cq.select(cq.from(Ticket.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -119,20 +119,20 @@ public class PublicationJpaController implements Serializable {
         }
     }
 
-    public Publication findPublication(Long id) {
+    public Ticket findTicket(Long id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Publication.class, id);
+            return em.find(Ticket.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getPublicationCount() {
+    public int getTicketCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Publication> rt = cq.from(Publication.class);
+            Root<Ticket> rt = cq.from(Ticket.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

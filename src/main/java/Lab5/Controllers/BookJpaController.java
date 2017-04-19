@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Lab5.Controller;
+package Lab5.Controllers;
 
-import Lab5.Controller.exceptions.NonexistentEntityException;
-import Lab5.Controller.exceptions.PreexistingEntityException;
+import Lab5.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -15,15 +14,15 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import lab5.entities.Ticket;
+import lab5.entities.Book;
 
 /**
  *
  * @author 14034305
  */
-public class TicketJpaController implements Serializable {
+public class BookJpaController implements Serializable {
 
-    public TicketJpaController(EntityManagerFactory emf) {
+    public BookJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -32,18 +31,13 @@ public class TicketJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Ticket ticket) throws PreexistingEntityException, Exception {
+    public void create(Book book) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(ticket);
+            em.persist(book);
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findTicket(ticket.getId()) != null) {
-                throw new PreexistingEntityException("Ticket " + ticket + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -51,19 +45,19 @@ public class TicketJpaController implements Serializable {
         }
     }
 
-    public void edit(Ticket ticket) throws NonexistentEntityException, Exception {
+    public void edit(Book book) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            ticket = em.merge(ticket);
+            book = em.merge(book);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = ticket.getId();
-                if (findTicket(id) == null) {
-                    throw new NonexistentEntityException("The ticket with id " + id + " no longer exists.");
+                Long id = book.getId();
+                if (findBook(id) == null) {
+                    throw new NonexistentEntityException("The book with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -79,14 +73,14 @@ public class TicketJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Ticket ticket;
+            Book book;
             try {
-                ticket = em.getReference(Ticket.class, id);
-                ticket.getId();
+                book = em.getReference(Book.class, id);
+                book.getId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The ticket with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The book with id " + id + " no longer exists.", enfe);
             }
-            em.remove(ticket);
+            em.remove(book);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -95,19 +89,19 @@ public class TicketJpaController implements Serializable {
         }
     }
 
-    public List<Ticket> findTicketEntities() {
-        return findTicketEntities(true, -1, -1);
+    public List<Book> findBookEntities() {
+        return findBookEntities(true, -1, -1);
     }
 
-    public List<Ticket> findTicketEntities(int maxResults, int firstResult) {
-        return findTicketEntities(false, maxResults, firstResult);
+    public List<Book> findBookEntities(int maxResults, int firstResult) {
+        return findBookEntities(false, maxResults, firstResult);
     }
 
-    private List<Ticket> findTicketEntities(boolean all, int maxResults, int firstResult) {
+    private List<Book> findBookEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Ticket.class));
+            cq.select(cq.from(Book.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -119,20 +113,20 @@ public class TicketJpaController implements Serializable {
         }
     }
 
-    public Ticket findTicket(Long id) {
+    public Book findBook(Long id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Ticket.class, id);
+            return em.find(Book.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getTicketCount() {
+    public int getBookCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Ticket> rt = cq.from(Ticket.class);
+            Root<Book> rt = cq.from(Book.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

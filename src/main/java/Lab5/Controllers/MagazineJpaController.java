@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Lab5.Controller;
+package Lab5.Controllers;
 
-import Lab5.Controller.exceptions.NonexistentEntityException;
-import Lab5.Controller.exceptions.PreexistingEntityException;
+import Lab5.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -15,15 +14,15 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import lab5.entities.discMag;
+import lab5.entities.Magazine;
 
 /**
  *
  * @author 14034305
  */
-public class discMagJpaController implements Serializable {
+public class MagazineJpaController implements Serializable {
 
-    public discMagJpaController(EntityManagerFactory emf) {
+    public MagazineJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
@@ -32,18 +31,13 @@ public class discMagJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(discMag discMag) throws PreexistingEntityException, Exception {
+    public void create(Magazine magazine) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(discMag);
+            em.persist(magazine);
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (finddiscMag(discMag.getId()) != null) {
-                throw new PreexistingEntityException("discMag " + discMag + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -51,19 +45,19 @@ public class discMagJpaController implements Serializable {
         }
     }
 
-    public void edit(discMag discMag) throws NonexistentEntityException, Exception {
+    public void edit(Magazine magazine) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            discMag = em.merge(discMag);
+            magazine = em.merge(magazine);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = discMag.getId();
-                if (finddiscMag(id) == null) {
-                    throw new NonexistentEntityException("The discMag with id " + id + " no longer exists.");
+                Long id = magazine.getId();
+                if (findMagazine(id) == null) {
+                    throw new NonexistentEntityException("The magazine with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -79,14 +73,14 @@ public class discMagJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            discMag discMag;
+            Magazine magazine;
             try {
-                discMag = em.getReference(discMag.class, id);
-                discMag.getId();
+                magazine = em.getReference(Magazine.class, id);
+                magazine.getId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The discMag with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The magazine with id " + id + " no longer exists.", enfe);
             }
-            em.remove(discMag);
+            em.remove(magazine);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -95,19 +89,19 @@ public class discMagJpaController implements Serializable {
         }
     }
 
-    public List<discMag> finddiscMagEntities() {
-        return finddiscMagEntities(true, -1, -1);
+    public List<Magazine> findMagazineEntities() {
+        return findMagazineEntities(true, -1, -1);
     }
 
-    public List<discMag> finddiscMagEntities(int maxResults, int firstResult) {
-        return finddiscMagEntities(false, maxResults, firstResult);
+    public List<Magazine> findMagazineEntities(int maxResults, int firstResult) {
+        return findMagazineEntities(false, maxResults, firstResult);
     }
 
-    private List<discMag> finddiscMagEntities(boolean all, int maxResults, int firstResult) {
+    private List<Magazine> findMagazineEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(discMag.class));
+            cq.select(cq.from(Magazine.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -119,20 +113,20 @@ public class discMagJpaController implements Serializable {
         }
     }
 
-    public discMag finddiscMag(Long id) {
+    public Magazine findMagazine(Long id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(discMag.class, id);
+            return em.find(Magazine.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getdiscMagCount() {
+    public int getMagazineCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<discMag> rt = cq.from(discMag.class);
+            Root<Magazine> rt = cq.from(Magazine.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

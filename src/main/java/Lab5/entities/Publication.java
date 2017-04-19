@@ -11,12 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public abstract class Publication implements SaleableItem, Serializable {
+public abstract class Publication implements Serializable, SaleableItem {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
     @Basic
     private double Price;
 
@@ -26,21 +22,14 @@ public abstract class Publication implements SaleableItem, Serializable {
     @Basic
     private String Title;
 
-    
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     public Publication() {
 
     }
-    
-    public Long getId() {
-        return this.id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
     public double getPrice() {
         return this.Price;
     }
@@ -65,6 +54,11 @@ public abstract class Publication implements SaleableItem, Serializable {
         this.Title = Title;
     }
 
-     
+    public Long getId() {
+        return this.id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
