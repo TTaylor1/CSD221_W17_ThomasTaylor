@@ -23,8 +23,7 @@ public class Publication {
     public Publication(String title, double price, int copies){
         this.title = title;
         this.price = price;
-        this.copies = copies;
-        
+        this.copies = copies;        
     }
     
     public void sellCopy(){        

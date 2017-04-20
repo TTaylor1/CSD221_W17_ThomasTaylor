@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Lab5;
+package Lab5.entities;
 
-import Lab5.entities.SaleableItem;
+
 
 /**
  *
  * @author 14034305
  */
-public class CashTill{
+public class CashTill {
     private double runningTotal;
     
     CashTill()
