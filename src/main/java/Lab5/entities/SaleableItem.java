@@ -10,7 +10,6 @@ package Lab5.entities;
  * @author 14034305
  */
 public interface SaleableItem {
-    public void sellCopy();
-    
+    public void sellCopy();    
     public double getPrice();
 }

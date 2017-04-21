@@ -6,10 +6,11 @@
 package Lab5;
 
 
+
 import Lab5.Controllers.BookJpaController;
 import Lab5.Controllers.MagazineJpaController;
 import Lab5.Controllers.TicketJpaController;
-import Lab5.Controller.exceptions.NonexistentEntityException;
+import Lab5.Controllers.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.text.Format;
 import java.text.ParseException;
@@ -90,7 +91,7 @@ public class App implements Serializable{
                      
             while (Choice < 0){
             
-            System.out.print("---------Main---------"+
+            System.out.print("\n---------Main---------"+
                              "\n1. Books" + 
                              "\n2. Magazines" +
                              "\n3. Tickets" +
@@ -102,6 +103,7 @@ public class App implements Serializable{
             
             switch(Choice){
                 case 1:
+                    System.out.println("\n-------------Books------------");
                     System.out.print("\n1. Add A Book"
                                      + "\n2. Edit A Book"
                                      + "\n3. Delete A Book"
@@ -123,7 +125,9 @@ public class App implements Serializable{
                         Choice = DeleteABook(Choice1, Pub);
                         break;
                     case 4:
-                        Choice = SellBook(Choice1, Pub);                       
+                        //Choice = SellBook(Choice1, Pub); 
+                        System.out.print("That book is not for sale!");
+                        Choice = -1;
                         break;
                     case 5:
                        Choice = -1;
@@ -131,6 +135,7 @@ public class App implements Serializable{
                     }}while (Choice != -1);
                     break;
                 case 2:
+                    System.out.println("\n-------------Magazines------------");
                     System.out.print("\n1. Add A Magazine"
                                      + "\n2. Edit A Magazine"
                                      + "\n3. Delete A Magazine"
@@ -152,18 +157,21 @@ public class App implements Serializable{
                         Choice = DeleteABook(Choice1, Pub);
                         break;
                     case 4:
-                        Choice = SellBook(Choice1, Pub);                        
+                        //Choice = SellBook(Choice1, Pub);     
+                        System.out.print("That magazine is not for sale!");
+                        Choice = -1;
                         break;
                     case 5: break;
                     }}while (Choice != -1);
                     break;
                 case 3:
-                    System.out.println("-------------Tickets------------"  
+                    System.out.println("\n-------------Tickets------------"  
                                      + "\n1. Add A Ticket"
                                      + "\n2. Edit A Ticket"
                                      + "\n3. Delete A Ticket"
                                      + "\n4. Sell A Ticket"
                                      + "\n5. Return to main Menu\n");
+                    System.out.print("\nWhat would you like to do?");
                     Choice2 = input.nextInt();
                     Pub = "Ticket";
                     switch(Choice2){
@@ -177,31 +185,25 @@ public class App implements Serializable{
                             Choice = DeleteABook(Choice1, Pub);
                             break;
                         case 4:
-                            Choice = SellBook(Choice1, Pub);
+                            //Choice = SellBook(Choice1, Pub);
+                            System.out.print("That ticket is not for sale!");
+                            Choice = -1;
                             break;
                         case 5:
                             break;
                     }
                     break;
                 case 4:
-                    CashTill Sales = new CashTill();
-                    Sales.showTotal(); 
+                    //CashTill Sales = new CashTill();
+                    //Sales.showTotal(); 
+                    System.out.print("CashTill currently broken!");
+                    Choice = -1;
                     break;
                 case 5:                                       
                     break;
                     
                 }  
             }
-            /*em.persist(mag);
-            em.getTransaction().commit();
-            
-            List<Publication> ListOfPublications = em.createQuery("SELECT c FROM Customer c").getResultList();
-            System.out.println("List of Publications");
-            for(Publication book:ListOfPublications){
-                System.out.println(book.getTitle());
-            }*/       
-    
-            
         }catch(Exception e){
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, e);
         }finally{
@@ -211,8 +213,6 @@ public class App implements Serializable{
 //                em.close();
         }
   
-    
- 
     }
 public int AddABook(int Choice, String Pub)throws ParseException, Exception{
         Scanner input=new Scanner(System.in);
@@ -233,7 +233,7 @@ public int AddABook(int Choice, String Pub)throws ParseException, Exception{
         if (Pub.equals("Book")){
                    Book book1 = new Book();
                     System.out.print("\nTitle: ");
-                    title = input.next();
+                    title = input.nextLine();
                     book1.setTitle(title);
                     System.out.print("\nQuantity to Order: ");
                     quantity = input.nextInt();
@@ -249,7 +249,7 @@ public int AddABook(int Choice, String Pub)throws ParseException, Exception{
         } else if (Pub.equals("Magazine")){    
                 Magazine mag1 = new Magazine();
                     System.out.print("\nTitle: ");
-                    title = input.next();
+                    title = input.nextLine();
                     mag1.setTitle(title);
                     System.out.print("\nQuantity to Order: ");
                     quantity = input.nextInt();
@@ -273,8 +273,9 @@ public int AddABook(int Choice, String Pub)throws ParseException, Exception{
             System.out.print("\nTicket Price: ");
             price = input.nextDouble();    
             tickz.setPrice(price);
+            Scanner input1=new Scanner(System.in);
             System.out.print("\nTicket Client: ");
-            client = input.next();
+            client = input1.nextLine();
             tickz.setClient(client);
             tickController.create(tickz);
         }
@@ -291,17 +292,17 @@ public int EditABook(int Choice, String Pub) throws ParseException, Exception{
         ListOfMags = magController.findMagazineEntities();
         ListOfTicks = tickController.findTicketEntities();
         Scanner input=new Scanner(System.in);
-        System.out.print("Here are the "+ Pub + "'s currently in the system:");
+        System.out.print("Here are the "+ Pub + "'s currently in the system:\n");
              if(Pub.equals("Book")){
                 Book bookEdit = new Book();                
-                
-                if(ListOfBooks == null)
+                counter = ListOfBooks.size();
+                if(counter < 1)
                 {
                     System.out.print("\nThere are no books to edit.");
                      return Choice = -1;
                 }
                 // a loop to print out all the books in the store
-            
+                counter = 1;
                 System.out.println("\nList of Books\n");
                 for(Book book1:ListOfBooks){
                 System.out.println("\n"+counter+"."+book1.getTitle());
@@ -346,12 +347,13 @@ public int EditABook(int Choice, String Pub) throws ParseException, Exception{
                 }   
              } else if(Pub.equals("Magazine")){
                 Magazine magEdit = new Magazine();
-                
-                if(ListOfMags == null)
+                counter = ListOfMags.size();
+                if(counter < 1)
                 {
                     System.out.print("\nThere are no magazines to edit.");
                      return Choice = -1;
                 }
+                counter = 1;
                 // a loop to print out all the magazines in the store
                 System.out.println("\nList of Magazines");
                 for(Magazine mag:ListOfMags){
@@ -398,11 +400,13 @@ public int EditABook(int Choice, String Pub) throws ParseException, Exception{
                 }
             } else if (Pub.equals("Ticket")){
                 Ticket tickEdit = new Ticket();
-                if(ListOfTicks == null)
+                counter = ListOfTicks.size();
+                if(counter < 1)
                 {
                     System.out.print("\nThere are no tickets to edit.");
                      return Choice = -1;
                 }
+                counter = 1;
                 // a loop to print out all the tickets in the store
                 System.out.print("\nList of Tickets");
                 for(Ticket tick1: ListOfTicks){
@@ -458,7 +462,12 @@ public int DeleteABook(int Choice, String Pub) throws NonexistentEntityException
         
             if (Pub.equals("Book")){
                 Book bookDel = new Book();
-                
+                counter = ListOfBooks.size();
+                if(counter < 1){
+                    System.out.print("\nThere are no books to delete!");
+                    return Choice = -1;
+                }
+                counter = 1;
                 System.out.println("\nList of Books\n");
                 for(Book book1:ListOfBooks){
                 System.out.println("\n"+counter+"."+book1.getTitle());
@@ -475,7 +484,12 @@ public int DeleteABook(int Choice, String Pub) throws NonexistentEntityException
                 
             } else if (Pub.equals("Magazine")){
                 Magazine magDel = new Magazine();
-                
+                counter = ListOfMags.size();
+                if(counter < 1){
+                    System.out.print("\nThere are no Magazines to delete!");
+                    return Choice = -1;
+                }
+                counter = 1;
                 System.out.println("\nList of Books\n");
                 for(Magazine mag:ListOfMags){
                 System.out.println("\n"+counter+"."+mag.getTitle());
@@ -489,7 +503,12 @@ public int DeleteABook(int Choice, String Pub) throws NonexistentEntityException
                 
             } else if (Pub.equals("Ticket")){
                 Ticket tickDel = new Ticket();
-                
+                counter = ListOfTicks.size();
+                if(counter < 1){
+                    System.out.print("Their are no Tickets in the system!");
+                    return Choice = -1;
+                }
+                counter = 1;
                 for(Ticket tick1:ListOfTicks){
                     System.out.print("\n" + counter + ". " + tick.getDescription());                    
                 }    

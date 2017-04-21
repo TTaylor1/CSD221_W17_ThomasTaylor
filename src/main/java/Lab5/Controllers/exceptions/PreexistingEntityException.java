@@ -1,4 +1,4 @@
-package Lab5.Controller.exceptions;
+package Lab5.Controllers.exceptions;
 
 public class PreexistingEntityException extends Exception {
     public PreexistingEntityException(String message, Throwable cause) {

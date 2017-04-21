@@ -1,4 +1,4 @@
-package Lab5.Controller.exceptions;
+package Lab5.Controllers.exceptions;
 
 import java.util.ArrayList;
 import java.util.List;

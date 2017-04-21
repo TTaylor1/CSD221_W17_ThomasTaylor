@@ -5,7 +5,7 @@
  */
 package Lab5.Controllers;
 
-import Lab5.exceptions.NonexistentEntityException;
+import Lab5.Controllers.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;

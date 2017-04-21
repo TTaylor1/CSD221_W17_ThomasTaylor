@@ -12,10 +12,9 @@ import javax.persistence.Id;
 
 
 @Entity
-public abstract class Publication implements SaleableItem, Serializable {
+public class Publication implements SaleableItem, Serializable {
 
-    @Basic
-    private double Price;
+    
 
     @Basic
     private int Copies;
@@ -26,16 +25,23 @@ public abstract class Publication implements SaleableItem, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    
-    public double getPrice() {
-        return this.Price;
+     
+    public void sellCopy() {
+       
     }
-
+    
+    
+    public double getPrice() {        
+        return Price;
+    }
+    
+    @Basic
+    private double Price;
+    
+    
     public Publication() {
 
-    }
-    
+    }    
 
     public void setPrice(double Price) {
         this.Price = Price;
